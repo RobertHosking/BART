@@ -1,0 +1,24 @@
+<%= form_for(dataset) do |f| %>
+  <% if dataset.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(dataset.errors.count, "error") %> prohibited this dataset from being saved:</h2>
+
+      <ul>
+      <% dataset.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+<% end %>
+<%= f.label(:name, "Name of Dataset")%>
+<%= f.text_field :name%>
+<%= f.label(:term, "Term")%>
+<%= f.select(:term, options_for_select([["Spring","spring"], ['Fall',"fall"]])) %>
+<%= f.label(:year, "Year")%>
+<%= f.select :year, options_for_select([[Date.today.year,Date.today.year],[Date.today.year-1, Date.today.year-1],[Date.today.year-2, Date.today.year-2],[Date.today.year-3, Date.today.year-3],[Date.today.year-4,Date.today.year-4]]) %>
+</br>
+<%= f.file_field :csv %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
