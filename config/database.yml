@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: rails_user
-  password: pass
-  socket: /var/run/mysqld/mysqld.sock
+  username: root
+  password:
+  host: localhost
 
 development:
   <<: *default
