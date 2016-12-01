@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :entries
   resources :cards
   resources :pages
   resources :sections

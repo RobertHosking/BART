@@ -1,27 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <div class="container">
-<table class="table-bordered">
-
-<%= @yaml %>
-
-<% @xlsx.each_with_pagename do |name, sheet| %>
-    <thead>
-        <tr>
-        <% sheet.row(1).each do |title| %>
-            <th><%= title %> </th>
-        <%end%>
-        </tr>
-    </thead>
-    <% for i in 2..5  #   @xlsx.last_row%>
-        <tr>
-        <% sheet.row(i).each do |cell| %>
-            <td> <%= cell %> </td>
-        <%end%>
-        </tr>
-    <% end %>
-<% end %>
-</table>
+    <p>  <%= @data.inspect %>
+</p>
 </div>
 
 <%= link_to "Download", "/uploads/"+File.basename(@dataset.original_file) %>

@@ -14,7 +14,7 @@ class DatasetsController < ApplicationController
 
     @dataset = Dataset.find_by(id: params[:id])
     @xlsx = Roo::Spreadsheet.open(@dataset[:original_file])
-    @yaml = File.read(@dataset[:yaml_file])
+    @data = Entry.find_by(dataset_id: @dataset.id)
   end
 
   # GET /datasets/new
@@ -29,11 +29,11 @@ class DatasetsController < ApplicationController
   # POST /datasets
   # POST /datasets.json
   def create
-   require 'roo'
-   require 'yaml'
-   require 'fileutils'
+      require 'roo'
+      require 'fileutils'
 
-      @dataset = Dataset.new(dataset_params)  
+
+      @dataset = Dataset.new(dataset_params)
       uploaded_io = params[:dataset][:csv]
       # Path to original uploaded file
       @dataset.base_path = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term])
@@ -41,10 +41,10 @@ class DatasetsController < ApplicationController
       # Path to spreadsheet with active and current data /public/datasets/[year]/[term]/[ACTIVE COPY]myspreadsheet.xlsx
       @dataset.working_file = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], "[Active Copy]"+uploaded_io.original_filename)
       # Path to yaml file (used for displaying spreadsheet data) /public/datasets/[year]/[term]/[created_at].yml
-      @dataset.yaml_file = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], Time.now.to_i.to_s + ".yml")  
+      #@dataset.yaml_file = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], Time.now.to_i.to_s + ".yml")
 
       # Save the original and create the working copy
-      # Create the directory if it does not exist 
+      # Create the directory if it does not exist
       FileUtils::mkdir_p(@dataset.base_path) unless File.directory?(@dataset.base_path)
         File.open(@dataset.original_file, 'wb') do |file|
             file.write(uploaded_io.read)
@@ -52,9 +52,9 @@ class DatasetsController < ApplicationController
         #Create a Working Copy
         FileUtils::cp(@dataset.original_file, @dataset.working_file)
         # Create the YAML
-        File.open(@dataset.yaml_file, 'wb') do |file|
-            file.write(sheet_to_hash(Roo::Spreadsheet.open(@dataset[:original_file])).to_yaml)
-        end
+
+        Dataset.sheet_to_db(Roo::Spreadsheet.open(@dataset[:original_file]))
+
     respond_to do |format|
       if @dataset.save
         format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }
@@ -78,35 +78,6 @@ class DatasetsController < ApplicationController
         format.json { render json: @dataset.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def sheet_to_hash(roo_object)
-      require 'roo'
-      require 'yaml'
-      # get headers
-      header = roo_object.row(1)
-      # iterate pages in a sheet
-      yaml_hash = Hash[] # the whole hash
-      row_hash = Hash[]
-      col_hash = Hash[]
-      roo_object.each_with_pagename do |name, sheet|
-          # iterate rows
-          sheet_hash = Hash[] # a single sheeti
-          row = 0
-          for i in 2..roo_object.last_row()
-            row_hash = Hash[] # a single row  
-            # iterate cells in a row  
-            col = 0
-            roo_object.row(i).each do |cell|
-                row_hash.store(header[col], cell)    
-                col += 1
-            end # cell
-            sheet_hash.store(row ,row_hash)
-            row += 1 
-          end # row
-          yaml_hash.store(sheet, sheet_hash)
-      end # sheet
-      return yaml_hash 
   end
 
   # DELETE /datasets/1
@@ -136,5 +107,3 @@ class DatasetsController < ApplicationController
     end
 
    end
-
-
