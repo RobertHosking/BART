@@ -17,9 +17,8 @@ BART helps Berea College organize, anaylize, and present data.
 
 ## Rails version 5.0.0.1
 
-[comment]: <> (Include the following sections in the README as they become availible "System dependencies", "Configuration", "Database Creation", "Database initialization", "how to run test suite", and "Services (job queues, cache servers, search engines etc.)", "Deployment instructions" )
-
 ## Useful Links
 
 [roo Project page](https://github.com/roo-rb/roo)
+
 [Patternfly](http://www.patternfly.org/pattern-library/#_)
