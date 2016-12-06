@@ -14,7 +14,6 @@ class DatasetsController < ApplicationController
 
     @dataset = Dataset.find_by(id: params[:id])
     @xlsx = Roo::Spreadsheet.open(@dataset[:original_file])
-    @data = Entry.all
   end
 
   # GET /datasets/new
@@ -36,12 +35,12 @@ class DatasetsController < ApplicationController
       @dataset = Dataset.new(dataset_params)
       uploaded_io = params[:dataset][:csv]
       # Path to original uploaded file
-      @dataset.base_path = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term])
-      @dataset.original_file = Rails.root.join('public', 'datasets',@dataset[:year],@dataset[:term], uploaded_io.original_filename)
+      @dataset.base_path = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], @dataset.name)
+      @dataset.original_file = Rails.root.join(@dataset.base_path, uploaded_io.original_filename)
       # Path to spreadsheet with active and current data /public/datasets/[year]/[term]/[ACTIVE COPY]myspreadsheet.xlsx
-      @dataset.working_file = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], "[Active Copy]"+uploaded_io.original_filename)
+      @dataset.working_file = Rails.root.join(@dataset.base_path, "[Active Copy]"+uploaded_io.original_filename)
       # Path to yaml file (used for displaying spreadsheet data) /public/datasets/[year]/[term]/[created_at].yml
-      @dataset.yaml_file = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], Time.now.to_i.to_s + ".yml")
+      @dataset.yaml_file = Rails.root.join(@dataset.base_path, "versions" ,Time.now.to_i.to_s + ".yml")
 
       # Save the original and create the working copy
       # Create the directory if it does not exist
@@ -49,13 +48,17 @@ class DatasetsController < ApplicationController
         File.open(@dataset.original_file, 'wb') do |file|
             file.write(uploaded_io.read)
         end
-        FileUtils::mkdir_p(@dataset.base_path) unless File.directory?(@dataset.base_path)
-          File.open(@dataset.yaml_file, 'wb') do |file|
-              file.write(Dataset.sheet_to_hash(Roo::Spreadsheet.open(@dataset[:original_file])).to_yaml)
-          end
-        #Create a Working Copy
-        FileUtils::cp(@dataset.original_file, @dataset.working_file)
-        # Create the YAML
+      yaml = Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset[:original_file]))
+
+      FileUtils::mkdir_p(File.dirname(@dataset.yaml_file)) unless File.directory?(File.dirname(@dataset.yaml_file))
+        File.open(@dataset.yaml_file, 'wb') do |file|
+            file.write(yaml)
+        end
+      #Create a Working Copy
+      FileUtils::cp(@dataset.original_file, @dataset.working_file)
+      #@dataset.yaml_to_sheet(@dataset.yaml_file).to_csv(Rails.root.join(@dataset.base_path, "build.csv"))
+      # Create the YAML
+      @dataset.columns = @dataset.get_columns
 
 
     respond_to do |format|
@@ -86,7 +89,10 @@ class DatasetsController < ApplicationController
   # DELETE /datasets/1
   # DELETE /datasets/1.json
   def destroy
+    require 'fileutils'
+
     # TODO delete or relocate all files of dataset
+    FileUtils.rm_rf(@dataset.base_path)
     @dataset.destroy
     respond_to do |format|
       format.html { redirect_to datasets_url, notice: 'Dataset was successfully destroyed.' }
@@ -107,7 +113,7 @@ class DatasetsController < ApplicationController
 
     private
     def dataset_params
-        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working)
+        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working, :columns)
     end
 
    end

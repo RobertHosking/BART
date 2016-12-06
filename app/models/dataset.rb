@@ -1,43 +1,41 @@
 class Dataset < ApplicationRecord
     has_many :sections
-    has_many :entries
+    serialize :columns, Array
 
-    def self.sheet_to_db(roo_object)
-        require 'roo'
-        roo_object.each_with_pagename do |name, sheet|
-            for i in 2..roo_object.last_row()
-              entry = Entry.new
-              roo_object.row(i).each_with_index do |cell, index|
-                  entry.attributes[index] = cell
-              end # cell
-            end # row
-        end # sheet
+    def get_columns
+      # Returns a list of dataset column names
+      require 'yaml'
+      hash = YAML.load(File.read(self.yaml_file))
+      return columns = hash[0].keys
+    end
 
+    def self.yaml_to_sheet(yaml_file) #WORK IN PROGRESS
+      # Returns a roo object from a yaml file
+      # Params:
+      # +yaml_file+ yaml object
+
+      #require 'yaml2csv'
+      require 'yaml'
+
+      hash = YAML.load(File.read(yaml_file))
+      columns = hash[0].keys
+      oo = Roo::Spreadsheet.open(self.original_file)
+      #set column names
+      columns.each_with_index do |name, col|
+        oo.set( 1, col, name )
+      end
+      #hash.each_with_index do |row, row_num|
+      #  row..each_with_index do |value, col|
+      #    oo.set( row, col, value )
+      #  end
+      #end
+      return oo
     end
 
     def self.sheet_to_yaml(roo_object)
-      require 'roo'
-      require 'yaml'
-      header = roo_object.row(1)
-      yaml_string = "entries: \n"
-
-      roo_object.each_with_pagename do |name, sheet|
-        for i in 2..roo_object.last_row()
-          col = 0
-          roo_object.row(i).each do |cell|
-            if col == 0
-              yaml_string << "- #{header[col]}: '#{cell}'\n"
-            else
-              yaml_string << "#{header[col]}: '#{cell}'\n"
-            end
-            col += 1
-          end
-        end
-      end
-      return yaml_string
-    end
-
-    def self.sheet_to_hash(roo_object)
+      # Returns a yaml object from a roo_object
+      # Params:
+      # +roo_object+ object created by Roo::Spreadsheet
         require 'roo'
         require 'yaml'
         # get headers
@@ -61,7 +59,9 @@ class Dataset < ApplicationRecord
               row += 1
             end # row
         end # sheet
-        return yaml_hash
+        return yaml_hash.to_yaml
     end
 
-end
+
+
+end #End Class
