@@ -1,24 +1,25 @@
-# README
+#Berea College Anaylitics and Reporting Tool (BART)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+BART helps Berea College organize, anaylize, and present data.
 
-Things you may want to cover:
+# Version Log
 
-* Ruby version
+### Version 0.01 - Fall 2016
+- Allow admins to upload a spreadsheet as a dataset. [X]
+- Perform CRUD on dataset. []
+- Create "Views" for the end user. []
+- Add graphs and stuff to these views. []
+- Talk to Berea's databases. []
+- Allow users to authenticate using Berea credintials. []
+- Define user permission scopes. []
 
-* System dependencies
+## Ruby version 2.3.1
 
-* Configuration
+## Rails version 5.0.0.1
 
-* Database creation
+[comment]: <> (Include the following sections in the README as they become availible "System dependencies", "Configuration", "Database Creation", "Database initialization", "how to run test suite", and "Services (job queues, cache servers, search engines etc.)", "Deployment instructions" )
 
-* Database initialization
+## Useful Links
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[roo Project page](https://github.com/roo-rb/roo)
+[Patternfly](http://www.patternfly.org/pattern-library/#_)

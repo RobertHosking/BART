@@ -4,19 +4,37 @@ class Dataset < ApplicationRecord
 
     def self.sheet_to_db(roo_object)
         require 'roo'
-        # get headers
-        header = roo_object.row(1)
-        # iterate pages in a sheet
         roo_object.each_with_pagename do |name, sheet|
-            # iterate rows
-            row = 0
-            (2..roo_object.last_row).each do |i|
+            for i in 2..roo_object.last_row()
               entry = Entry.new
-              
-              # map spreadsheet columns to values 1:1
-              entry.save
+              roo_object.row(i).each_with_index do |cell, index|
+                  entry.attributes[index] = cell
+              end # cell
             end # row
         end # sheet
+
+    end
+
+    def self.sheet_to_yaml(roo_object)
+      require 'roo'
+      require 'yaml'
+      header = roo_object.row(1)
+      yaml_string = "entries: \n"
+
+      roo_object.each_with_pagename do |name, sheet|
+        for i in 2..roo_object.last_row()
+          col = 0
+          roo_object.row(i).each do |cell|
+            if col == 0
+              yaml_string << "- #{header[col]}: '#{cell}'\n"
+            else
+              yaml_string << "#{header[col]}: '#{cell}'\n"
+            end
+            col += 1
+          end
+        end
+      end
+      return yaml_string
     end
 
     def self.sheet_to_hash(roo_object)
@@ -30,7 +48,6 @@ class Dataset < ApplicationRecord
         col_hash = Hash[]
         roo_object.each_with_pagename do |name, sheet|
             # iterate rows
-            sheet_hash = Hash[] # a single sheet
             row = 0
             for i in 2..roo_object.last_row()
               row_hash = Hash[] # a single row
@@ -40,10 +57,9 @@ class Dataset < ApplicationRecord
                   row_hash.store(header[col], cell)
                   col += 1
               end # cell
-              sheet_hash.store(row ,row_hash)
+              yaml_hash.store(row ,row_hash)
               row += 1
             end # row
-            yaml_hash.store(sheet, sheet_hash)
         end # sheet
         return yaml_hash
     end
