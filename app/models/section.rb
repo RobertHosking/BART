@@ -1,4 +1,3 @@
 class Section < ApplicationRecord
-    belongs_to :dataset
-   has_many :pages
+  belongs_to :report
 end

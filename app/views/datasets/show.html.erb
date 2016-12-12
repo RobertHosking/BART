@@ -4,6 +4,6 @@
 
 </div>
 
-<%= link_to "Download", "/uploads/"+File.basename(@dataset.original_file) %>
+<%= link_to "Download", @dataset.working_file %>
 <%= link_to 'Edit', edit_dataset_path(@dataset) %> |
 <%= link_to 'Back', datasets_path %>

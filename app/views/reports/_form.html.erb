@@ -1,0 +1,21 @@
+<%= form_for(report) do |f| %>
+  <% if report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(report.errors.count, "error") %> prohibited this report from being saved:</h2>
+
+      <ul>
+      <% report.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.label(:name, "Report Title")%>
+  <%= f.text_field :name%>
+
+  <%= f.select(:datasets, options_for_select(@dataset_options),{},{ :multiple => true, :size => @dataset_options.length}) %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,12 +1,36 @@
 class Dataset < ApplicationRecord
-    has_many :sections
-    serialize :columns, Array
+    has_and_belongs_to_many :reports
+
+    serialize :columns, Array # allows :columns to be stored as an array
+
+    def write_columns_to_sheet
+      # Opens working copy spreadsheet, updates column names, and writes changes
+      require 'rubyXL'
+
+      workbook = RubyXL::Parser.parse(self.working_file)
+      worksheet = workbook[0]
+      self.columns.each_with_index do |val, col|
+        worksheet.add_cell(0, col, val)
+      end
+      workbook.write(self.working_file)
+    end
 
     def get_columns
       # Returns a list of dataset column names
       require 'yaml'
       hash = YAML.load(File.read(self.yaml_file))
       return columns = hash[0].keys
+    end
+
+    def self.write_to(f_path, content)
+      # Writes content to file
+      # Parms:
+      # +f_path+ full file path from root
+      # +content+ content to write to file
+      FileUtils::mkdir_p(File.dirname(f_path)) unless File.directory?(File.dirname(f_path))
+        File.open(f_path, 'wb') do |file|
+            file.write(content)
+        end
     end
 
     def self.yaml_to_sheet(yaml_file) #WORK IN PROGRESS
@@ -61,6 +85,8 @@ class Dataset < ApplicationRecord
         end # sheet
         return yaml_hash.to_yaml
     end
+
+
 
 
 

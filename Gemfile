@@ -32,6 +32,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Roo Spreadsheet Read access Docs: https://github.com/roo-rb/roo
+gem 'rubyXL', '~> 3.3', '>= 3.3.22'
 gem 'roo', '~> 2.5.0'
 gem 'bootstrap-sass', '~> 3.3.1'
 gem 'autoprefixer-rails'

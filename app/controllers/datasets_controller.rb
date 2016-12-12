@@ -41,19 +41,11 @@ class DatasetsController < ApplicationController
       @dataset.working_file = Rails.root.join(@dataset.base_path, "[Active Copy]"+uploaded_io.original_filename)
       # Path to yaml file (used for displaying spreadsheet data) /public/datasets/[year]/[term]/[created_at].yml
       @dataset.yaml_file = Rails.root.join(@dataset.base_path, "versions" ,Time.now.to_i.to_s + ".yml")
-
       # Save the original and create the working copy
       # Create the directory if it does not exist
-      FileUtils::mkdir_p(@dataset.base_path) unless File.directory?(@dataset.base_path)
-        File.open(@dataset.original_file, 'wb') do |file|
-            file.write(uploaded_io.read)
-        end
+      Dataset.write_to(@dataset.original_file, uploaded_io.read)
       yaml = Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset[:original_file]))
-
-      FileUtils::mkdir_p(File.dirname(@dataset.yaml_file)) unless File.directory?(File.dirname(@dataset.yaml_file))
-        File.open(@dataset.yaml_file, 'wb') do |file|
-            file.write(yaml)
-        end
+      Dataset.write_to(@dataset.yaml_file, yaml)
       #Create a Working Copy
       FileUtils::cp(@dataset.original_file, @dataset.working_file)
       #@dataset.yaml_to_sheet(@dataset.yaml_file).to_csv(Rails.root.join(@dataset.base_path, "build.csv"))
@@ -75,8 +67,11 @@ class DatasetsController < ApplicationController
   # PATCH/PUT /datasets/1
   # PATCH/PUT /datasets/1.json
   def update
+    require 'roo'
     respond_to do |format|
       if @dataset.update(dataset_params)
+        @dataset.write_columns_to_sheet
+        Dataset.write_to(@dataset.yaml_file, Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset.working_file)))
         format.html { redirect_to @dataset, notice: 'Dataset was successfully updated.' }
         format.json { render :show, status: :ok, location: @dataset }
       else
@@ -113,7 +108,7 @@ class DatasetsController < ApplicationController
 
     private
     def dataset_params
-        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working, :columns)
+        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working, :columns => [])
     end
 
    end
