@@ -1,5 +1,4 @@
 <%= form_for(dataset) do |f| %>
-<h1>EDIT</h1>
 
 
   <% if dataset.errors.any? %>
@@ -19,9 +18,11 @@
 <%= f.select(:term, options_for_select([["Spring","spring"], ['Fall',"fall"]])) %>
 <%= f.label(:year, "Year")%>
 <%= f.select :year, options_for_select([[Date.today.year,Date.today.year],[Date.today.year-1, Date.today.year-1],[Date.today.year-2, Date.today.year-2],[Date.today.year-3, Date.today.year-3],[Date.today.year-4,Date.today.year-4]]) %>
-</br>
-<%= f.file_field :csv %>
-</br>
+<br>
+
+<%= f.label :active, "Active" %>
+<%= f.check_box :active, {:class => "myclass", :style => ""}, true, false %>
+<br>
 <% dataset.columns.each_with_index do |col, cell|%>
   <%= cell+1 %> <%= f.text_field :columns, :value => col, multiple: true %> </br>
 <% end %>

@@ -31,8 +31,8 @@ class DatasetsController < ApplicationController
       require 'roo'
       require 'fileutils'
 
-
       @dataset = Dataset.new(dataset_params)
+      @dataset.active = true
       uploaded_io = params[:dataset][:csv]
       # Path to original uploaded file
       @dataset.base_path = Rails.root.join('public', 'datasets', @dataset[:year], @dataset[:term], @dataset.name)

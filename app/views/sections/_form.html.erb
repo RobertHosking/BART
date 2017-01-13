@@ -11,9 +11,8 @@
     </div>
   <% end %>
 
-  <%= f.label "Name", :name %>
+  <%= f.label :name, "Name" %>
   <%= f.text_field :name %>
-  <%= f.select :access, options_for_select([["Spring",1], ['Fall',0]]) %>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -62,12 +62,11 @@ ActiveRecord::Schema.define(version: 20161208191836) do
   end
 
   create_table "sections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "dataset_id"
+    t.integer  "report_id"
     t.string   "name"
-    t.integer  "access"
-    t.boolean  "visible"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["report_id"], name: "index_sections_on_report_id", using: :btree
   end
 
 end

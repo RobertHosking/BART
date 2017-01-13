@@ -6,9 +6,24 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
   </head>
 
   <body>
-    <%= yield %>
+    <%= render 'layouts/header' %>
+    <% if controller_name == "site" && action_name == "dashboard" %>
+      <%= render 'layouts/sidebar' %>
+      <%= render 'layouts/new' %>
+
+    <% end %>
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+      <div class="col-xs-10 col-xs-offset-2"
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>

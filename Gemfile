@@ -36,7 +36,7 @@ gem 'rubyXL', '~> 3.3', '>= 3.3.22'
 gem 'roo', '~> 2.5.0'
 gem 'bootstrap-sass', '~> 3.3.1'
 gem 'autoprefixer-rails'
-
+gem 'patternfly-sass', '~> 3.15'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
