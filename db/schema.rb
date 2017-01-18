@@ -46,15 +46,6 @@ ActiveRecord::Schema.define(version: 20161208191836) do
     t.index ["report_id"], name: "index_datasets_reports_on_report_id", using: :btree
   end
 
-  create_table "pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "section_id"
-    t.string   "name"
-    t.integer  "permission"
-    t.boolean  "visible"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at", null: false

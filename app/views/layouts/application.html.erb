@@ -11,11 +11,12 @@
 
   <body>
     <%= render 'layouts/header' %>
+
     <% if controller_name == "site" && action_name == "dashboard" %>
       <%= render 'layouts/sidebar' %>
       <%= render 'layouts/new' %>
-
     <% end %>
+
     <br>
     <br>
     <br>

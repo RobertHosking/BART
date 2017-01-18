@@ -55,7 +55,7 @@ class DatasetsController < ApplicationController
 
     respond_to do |format|
       if @dataset.save
-        format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }
+        format.html { redirect_to '/dashboard', notice: 'Dataset was successfully created.' }
         format.json { render :show, status: :created, location: @dataset }
       else
         format.html { render :new }
@@ -72,7 +72,7 @@ class DatasetsController < ApplicationController
       if @dataset.update(dataset_params)
         @dataset.write_columns_to_sheet
         Dataset.write_to(@dataset.yaml_file, Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset.working_file)))
-        format.html { redirect_to @dataset, notice: 'Dataset was successfully updated.' }
+        format.html { redirect_to '/dashboard', notice: 'Dataset was successfully updated.' }
         format.json { render :show, status: :ok, location: @dataset }
       else
         format.html { render :edit }
@@ -90,7 +90,7 @@ class DatasetsController < ApplicationController
     FileUtils.rm_rf(@dataset.base_path)
     @dataset.destroy
     respond_to do |format|
-      format.html { redirect_to datasets_url, notice: 'Dataset was successfully destroyed.' }
+      format.html { redirect_to '/dashboard', notice: 'Dataset was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

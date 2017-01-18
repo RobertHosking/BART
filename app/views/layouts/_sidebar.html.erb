@@ -3,25 +3,16 @@
 <div id="sidebar-wrapper">
           <ul class="sidebar-nav" style="margin-left:0;">
               <li class="sidebar-brand">
-                
+
               </li>
+              <% @sections.each do |section| %>
+                <li>
+                    <a href="#"><i class="fa fa-sort-alpha-asc " aria-hidden="true"> </i> <span style="margin-left:10px;">Section</span>  </a>
+                </li>
+              <% end %>
+
               <li>
-                  <a href="#"><i class="fa fa-sort-alpha-asc " aria-hidden="true"> </i> <span style="margin-left:10px;">Section</span>  </a>
-              </li>
-              <li>
-                  <a href="#"> <i class="fa fa-play-circle-o " aria-hidden="true"> </i> <span style="margin-left:10px;"> Section</span> </a>
-              </li>
-              <li>
-                  <a href="#"> <i class="fa fa-puzzle-piece" aria-hidden="true"> </i> <span style="margin-left:10px;"> Section</span> </a>
-              </li>
-              <li>
-                  <a href="#"> <i class="fa fa-font" aria-hidden="true"> </i> <span style="margin-left:10px;"> Section</span> </a>
-              </li>
-              <li>
-                  <a href="#"><i class="fa fa-info-circle " aria-hidden="true"> </i> <span style="margin-left:10px;">Section </span> </a>
-              </li>
-              <li>
-                  <a href="#"> <i class="fa fa-comment-o" aria-hidden="true"> </i> <span style="margin-left:10px;"> Section</span> </a>
+                  <a href="/sections/new"> <i class="fa fa-plus" aria-hidden="true"> </i> <span style="margin-left:10px;"> New Section</span> </a>
               </li>
           </ul>
       </div>

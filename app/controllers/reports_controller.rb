@@ -40,7 +40,7 @@ class ReportsController < ApplicationController
     end
     respond_to do |format|
       if @report.save
-        format.html { redirect_to @report, notice: 'Report was successfully created.' }
+        format.html { redirect_to '/dashboard', notice: 'Report was successfully created.' }
         format.json { render :show, status: :created, location: @report }
       else
         format.html { render :new }
@@ -59,7 +59,7 @@ class ReportsController < ApplicationController
       end
 
       if @report.update(report_params)
-        format.html { redirect_to @report, notice: 'Report was successfully updated.' }
+        format.html { redirect_to '/dashboard', notice: 'Report was successfully updated.' }
         format.json { render :show, status: :ok, location: @report }
       else
         format.html { render :edit }
@@ -74,7 +74,7 @@ class ReportsController < ApplicationController
     @report.datasets.delete_all
     @report.destroy
     respond_to do |format|
-      format.html { redirect_to reports_url, notice: 'Report was successfully destroyed.' }
+      format.html { redirect_to '/dashboard', notice: 'Report was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
