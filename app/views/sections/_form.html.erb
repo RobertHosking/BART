@@ -14,6 +14,7 @@
   <%= f.label :name, "Name" %>
   <%= f.text_field :name %>
   <div class="actions">
-    <%= f.submit %>
+    <%= hidden_field_tag(:report_id, params[:report_id]) %>
+    <%= f.submit%>
   </div>
 <% end %>

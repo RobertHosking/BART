@@ -2,9 +2,8 @@ class CreateSections < ActiveRecord::Migration[5.0]
 
  def change
     create_table :sections do |t|
-        t.belongs_to :report, index: true
         t.string :name
-
+        t.integer :report_id
         t.timestamps
     end
   end

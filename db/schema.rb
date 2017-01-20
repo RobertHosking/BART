@@ -48,16 +48,16 @@ ActiveRecord::Schema.define(version: 20161208191836) do
 
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "datasets",   limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "sections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "report_id"
     t.string   "name"
+    t.integer  "report_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["report_id"], name: "index_sections_on_report_id", using: :btree
   end
 
 end

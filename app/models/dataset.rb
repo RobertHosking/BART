@@ -1,6 +1,4 @@
 class Dataset < ApplicationRecord
-    has_and_belongs_to_many :reports
-
     serialize :columns, Array # allows :columns to be stored as an array
 
     def write_columns_to_sheet
@@ -86,7 +84,34 @@ class Dataset < ApplicationRecord
         return yaml_hash.to_yaml
     end
 
+    ######
+    # BEGIN YAML QUERYING HELPER METHODS
+    ######
 
+    def column(column_name)
+      # Returns list of entries under column titled (column_name)
+      require 'yaml'
+      hash = YAML.load(File.read(self.yaml_file))
+      entries = []
+      hash.each do |index, key|
+        entries << key[column_name]
+      end
+      return entries
+    end
+
+    def group(column_name)
+      self.column(column_name).group_by{|x| x}.values.sort
+    end
+
+    def count(column_name)
+      col = self.group(column_name)
+      count_list = []
+      .group_by{|x| x}.values.sort
+      col.each do |group|
+        count_list << [group[0], group.length]
+      end
+      return count_list
+    end
 
 
 

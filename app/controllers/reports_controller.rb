@@ -14,21 +14,15 @@ class ReportsController < ApplicationController
 
   # GET /reports/new
   def new
-    @report = Report.new
     @datasets = Dataset.all
-    @dataset_options = []
-    @datasets.each do |set|
-      @dataset_options << [set.name, set.id]
-    end
+    @report = Report.new
+
   end
 
   # GET /reports/1/edit
   def edit
     @datasets = Dataset.all
-    @dataset_options = []
-    @datasets.each do |set|
-      @dataset_options << [set.name, set.id]
-    end
+
   end
 
   # POST /reports
@@ -36,7 +30,7 @@ class ReportsController < ApplicationController
   def create
     @report = Report.new(report_params)
     join_params[:datasets].drop(1).each do |dataset_id|
-      @report.add_dataset(dataset_id)
+      @report.datasets << dataset_id
     end
     respond_to do |format|
       if @report.save

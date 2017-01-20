@@ -9,9 +9,11 @@ class SiteController < ApplicationController
     else
       @report = Report.last
     end
-
-    @sections = Section.where('report_id=?', @report.id)
-
-    @reports = Report.all
+    if Report.last.nil?
+      #do nothing
+    else
+      @sections = Section.where('report_id=?', @report.id)
+      @reports = Report.all
+    end
   end
 end

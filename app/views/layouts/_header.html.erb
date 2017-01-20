@@ -25,11 +25,12 @@
 				</li>
 			</ul>
       <% if controller_name == "site" && action_name == "dashboard" %>
-        <%= form_tag('/dashboard', class: 'navbar-search pull-left') do%>
-          <%= select_tag "report", options_from_collection_for_select(@reports, "id", "name", @report.id),:onchange =>'this.form.submit()', class: "form-control" %>
-        <% end %>
-        <%= link_to 'Edit', '/reports/'+@report.id.to_s+'/edit', class: "btn" %>
-      <% end %>
-
+				<% if !@reports.nil?%>
+	        <%= form_tag('/dashboard', class: 'navbar-search pull-left') do%>
+	          <%= select_tag "report", options_from_collection_for_select(@reports, "id", "name", @report.id),:onchange =>'this.form.submit()', class: "form-control" %>
+	        <% end %>
+	        <%= link_to 'Edit', '/reports/'+@report.id.to_s+'/edit', class: "btn" %>
+	      <% end %>
+			<% end %>
 		</div>
 </nav>

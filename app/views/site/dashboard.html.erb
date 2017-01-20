@@ -1,3 +1,14 @@
-<h1>Site#dashboard</h1>
-<p>Find me in app/views/site/dashboard.html.erb</p>
-<%= @report.name %>
+<% if @report.nil? %>
+  <div class="card">
+    <h1>There's nothing here.</h1>
+    <a href="<%= new_report_path %>">Create a report</a>
+  </div>
+<% else %>
+<br>
+<br>
+  <%= @report.name %>
+  <%  @report.datasets.each do |d|%>
+    <% set = Dataset.find(d) %>
+    <%= set.count("SurveyCompleteDate")%>
+  <% end %>
+<% end %>

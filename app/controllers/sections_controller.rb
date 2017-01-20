@@ -25,7 +25,7 @@ class SectionsController < ApplicationController
   # POST /sections.json
   def create
     @section = Section.new(section_params)
-
+    @section.report_id = params[:report_id]
     respond_to do |format|
       if @section.save
         format.html { redirect_to '/dashboard', notice: 'Section was successfully created.' }
@@ -69,6 +69,6 @@ class SectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def section_params
-      params.require(:section).permit(:name)
+      params.require(:section).permit(:name, :report_id)
     end
 end

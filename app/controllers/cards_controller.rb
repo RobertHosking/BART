@@ -15,7 +15,6 @@ class CardsController < ApplicationController
   # GET /cards/new
   def new
     @card = Card.new
-    redirect_to '/dashboard'
   end
 
   # GET /cards/1/edit

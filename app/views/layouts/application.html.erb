@@ -13,8 +13,10 @@
     <%= render 'layouts/header' %>
 
     <% if controller_name == "site" && action_name == "dashboard" %>
-      <%= render 'layouts/sidebar' %>
-      <%= render 'layouts/new' %>
+      <% if !@reports.nil? %>
+        <%= render 'layouts/sidebar' %>
+        <%= render 'layouts/new' %>
+      <% end %>
     <% end %>
 
     <br>
