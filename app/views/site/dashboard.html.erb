@@ -6,9 +6,16 @@
 <% else %>
 <br>
 <br>
+<br>
+<br>
   <%= @report.name %>
   <%  @report.datasets.each do |d|%>
     <% set = Dataset.find(d) %>
-    <%= set.count("SurveyCompleteDate")%>
+    <%= set.count("Question is for Employee or Position?")%>
   <% end %>
 <% end %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    Basic panel
+  </div>
+</div>

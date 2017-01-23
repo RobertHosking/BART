@@ -6,7 +6,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">BART</a>
+			<a class="navbar-brand" style="font-family:'Roboto'; font-size:20pt; color:#37474F;" href="/dashboard">BART</a>
 		</div>
 
 		<div class="collapse navbar-collapse" id="navbar">
@@ -24,13 +24,45 @@
 					</ul>
 				</li>
 			</ul>
-      <% if controller_name == "site" && action_name == "dashboard" %>
-				<% if !@reports.nil?%>
-	        <%= form_tag('/dashboard', class: 'navbar-search pull-left') do%>
-	          <%= select_tag "report", options_from_collection_for_select(@reports, "id", "name", @report.id),:onchange =>'this.form.submit()', class: "form-control" %>
-	        <% end %>
-	        <%= link_to 'Edit', '/reports/'+@report.id.to_s+'/edit', class: "btn" %>
-	      <% end %>
-			<% end %>
+
 		</div>
 </nav>
+<% if controller_name == "site" && action_name == "dashboard" %>
+<nav class="navbar  navbar-findcond navbar-default navbar-lower" role="navigation">
+  <div class="collapse navbar-collapse collapse-buttons">
+
+			<div class="col-sm-1">
+				<button style="margin:10px;" class='btn btn-danger navbar-search pull-left' onclick="location.href='<%= new_report_path%>'">New Report</button>
+			</div>
+			<% if !@reports.nil?%>
+				<div class="col-sm-4">
+					<%= form_tag('/dashboard', class: 'navbar-search pull-left btn-group', style: 'margin:10px;') do%>
+						<%= select_tag "report", options_from_collection_for_select(@reports, "id", "name", @report.id),:onchange =>'this.form.submit()', class: "form-control" %>
+					<% end %>
+					<%= link_to 'Edit', '/reports/'+@report.id.to_s+'/edit', class: "btn", style: "margin:10px" %>
+				</div>
+			<% end %>
+		<% end %>
+
+  </div>
+</nav>
+
+<style>
+.navbar-lower{
+	position: fixed;
+	top: 65px;
+	z-index: 1000;
+	width: 100%;
+}
+
+#sidebar-wrapper{
+	top:65px;
+	z-index: 1;
+}
+</style>
+
+<script>
+$('.navbar-lower').affix({
+  offset: {top: 65}
+});
+</script>
