@@ -11,10 +11,11 @@
     </div>
   <% end %>
 
-  <%= f.label :name, "Name" %>
-  <%= f.text_field :name %>
+  <%= f.label :name, "Name"%>
+  <%= f.text_field :name, class: "form-control" %>
   <div class="actions">
     <%= hidden_field_tag(:report_id, params[:report_id]) %>
-    <%= f.submit%>
+    <br>
+    <%= f.submit class:"btn"%>
   </div>
 <% end %>

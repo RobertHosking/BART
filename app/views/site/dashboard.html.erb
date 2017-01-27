@@ -1,21 +1,18 @@
+<br>
+<br>
+<br>
+<br>
 <% if @report.nil? %>
   <div class="card">
-    <h1>There's nothing here.</h1>
-    <a href="<%= new_report_path %>">Create a report</a>
+    <h2 class="text-center">There's nothing here.</h2>
+    <br>
+    <p class="text-center">Get started by creating a new report.</p>
+    <br>
+    <img class="center-block" src="newreport.gif" alt="">
   </div>
+
 <% else %>
-<br>
-<br>
-<br>
-<br>
+
   <%= @report.name %>
-  <%  @report.datasets.each do |d|%>
-    <% set = Dataset.find(d) %>
-    <%= set.count("Question is for Employee or Position?")%>
-  <% end %>
+
 <% end %>
-<div class="panel panel-default">
-  <div class="panel-body">
-    Basic panel
-  </div>
-</div>

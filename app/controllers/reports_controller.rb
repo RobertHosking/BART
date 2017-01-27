@@ -29,9 +29,7 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     @report = Report.new(report_params)
-    join_params[:datasets].drop(1).each do |dataset_id|
-      @report.datasets << dataset_id
-    end
+
     respond_to do |format|
       if @report.save
         format.html { redirect_to '/dashboard', notice: 'Report was successfully created.' }
@@ -83,7 +81,5 @@ class ReportsController < ApplicationController
     def report_params
       params.require(:report).permit(:name)
     end
-    def join_params
-      params.require(:report).permit(:datasets => [])
-    end
+    
 end

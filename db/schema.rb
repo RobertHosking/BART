@@ -13,11 +13,14 @@
 ActiveRecord::Schema.define(version: 20161208191836) do
 
   create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer  "page_id"
+    t.integer  "section_id"
     t.string   "title"
+    t.string   "level"
+    t.string   "datasets"
     t.integer  "permission"
     t.boolean  "visible"
     t.string   "type"
+    t.string   "columns"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -34,9 +37,10 @@ ActiveRecord::Schema.define(version: 20161208191836) do
     t.string   "original_file"
     t.string   "yaml_file"
     t.string   "working_file"
-    t.text     "columns",       limit: 65535
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.text     "columns",         limit: 65535
+    t.text     "display_columns", limit: 65535
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "datasets_reports", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -48,9 +52,8 @@ ActiveRecord::Schema.define(version: 20161208191836) do
 
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.text     "datasets",   limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

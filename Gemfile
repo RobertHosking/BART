@@ -8,6 +8,7 @@ gem 'mysql2', '>= 0.3.18', '< 0.5'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
+gem 'patternfly-sass', '~> 3.15'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -36,7 +37,8 @@ gem 'rubyXL', '~> 3.3', '>= 3.3.22'
 gem 'roo', '~> 2.5.0'
 gem 'bootstrap-sass', '~> 3.3.1'
 gem 'autoprefixer-rails'
-gem 'patternfly-sass', '~> 3.15'
+gem 'd3_rails'
+gem 'c3-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

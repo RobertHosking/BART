@@ -10,10 +10,212 @@
       </ul>
     </div>
   <% end %>
-  <%= f.label "Card Title", :title%>
-  <%= f.text_field :title%>
+  <div class="form-group">
+    <%= f.label :title, "Title"%>
+    <%= f.text_field :title, class: "form-control"%><br>
 
-  <div class="actions">
-    <%= f.submit %>
+    <%= f.label :type, "Card Data Type"%>
+    <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"],[]]),{}, class: "form-control" %>
+    <br>
+    <%= f.label :level, "Data Access Level" %>
+    <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
+    <br>
+    <%= f.label :datasets, "Data Source"%>
+    <%= f.select :datasets,options_from_collection_for_select(@datasets, "id", "name", @datasets.last),{}, class: "form-control" %>
+    <div class="actions">
+      <%= f.submit class: "btn"%>
+    </div>
   </div>
+
 <% end %>
+</div>
+
+<div class="col-sm-3">
+<h1> Preview </h1>
+
+      <div id="pie-chart-7" class="example-pie-chart-bottom-legend"></div>
+      <script>
+      var c3ChartDefaults = $().c3ChartDefaults();
+
+      var pieData = {
+      type : 'pie',
+      colors: {
+      Dogs: $.pfPaletteColors.red,
+      Cats: $.pfPaletteColors.blue,
+      Fish: $.pfPaletteColors.orange,
+      Hamsters: $.pfPaletteColors.green
+      },
+      columns: [
+      ['Dogs', 3],
+      ['Cats', 2],
+      ['Fish', 10],
+      ['Hamsters', 2]
+      ],
+      onclick: function (d, i) { console.log("onclick", d, i); },
+      onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+      onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+      };
+
+      // Pie Chart without Legend
+      var pieChartConfig = c3ChartDefaults.getDefaultPieConfig();
+      pieChartConfig.bindto = '#pie-chart-5';
+      pieChartConfig.data = pieData;
+      pieChartConfig.size = {
+      width: 200,
+      height: 171
+      };
+      var pieChartNoLegend = c3.generate(pieChartConfig);
+
+      // Right Legend
+      var pieChartRightConfig = c3ChartDefaults.getDefaultPieConfig();
+      pieChartRightConfig.bindto = '#pie-chart-6';
+      pieChartRightConfig.data = pieData;
+      pieChartRightConfig.legend = {
+      show: true,
+      position: 'right'
+      };
+      pieChartRightConfig.size = {
+      width: 251,
+      height: 161
+      };
+      var pieChartRightLegend = c3.generate(pieChartRightConfig);
+
+      // Pie Chart Bottom Legend
+      var pieChartBottomConfig = c3ChartDefaults.getDefaultPieConfig();
+      pieChartBottomConfig.bindto = '#pie-chart-7';
+      pieChartBottomConfig.data = pieData;
+      pieChartBottomConfig.legend = {
+      show: true,
+      position: 'bottom'
+      };
+      pieChartBottomConfig.size = {
+      width: 321,
+      height: 191
+      };
+      var pieChartBottomLegend = c3.generate(pieChartBottomConfig);
+      </script>
+
+
+
+
+      <div id="donut-chart-5"></div>
+      <script>
+        var c3ChartDefaults = $().c3ChartDefaults();
+
+        var chartUrls = [
+          'https://www.gogole.com',
+          'https://www.yahoo.com',
+          'https://www.bing.com/',
+          'https://duckduckgo.com/'
+        ];
+        var categories = ['Q1', 'Q2', 'Q3', 'Q4'];
+        var columnsData = [
+          ['data1', 400, 360, 320, 175]
+        ];
+
+        var verticalBarChartConfig = $().c3ChartDefaults().getDefaultBarConfig(categories);
+        verticalBarChartConfig.bindto = '#donut-chart-5';
+        verticalBarChartConfig.axis = {
+          x: {
+            categories: categories,
+            type: 'category'
+          }
+        };
+        verticalBarChartConfig.data = {
+          type: 'bar',
+          columns: columnsData,
+          // optional drilldown behavior
+          onclick: function (d, element) {
+            window.location = chartUrls[d.index];
+          }
+        };
+        var verticalBarChart = c3.generate(verticalBarChartConfig);
+      </script>
+
+
+
+
+
+      <div id="bar-chart-6"></div>
+      <script>
+        var c3ChartDefaults = $().c3ChartDefaults();
+
+        var chartUrls = [
+          'https://www.gogole.com',
+          'https://www.yahoo.com',
+          'https://www.bing.com/',
+          'https://duckduckgo.com/'
+        ];
+        var categories = ['Q1', 'Q2', 'Q3', 'Q4'];
+        var columnsData = [
+          ['data1', 400, 360, 320, 175]
+        ];
+
+        var groupedcCategories = ['2013', '2014', '2015'];
+        var groupedColumnsData = [
+          ['Q1', 400, 250, 375],
+          ['Q2', 355, 305, 300],
+          ['Q3', 315, 340, 276],
+          ['Q4', 180, 390, 190]
+        ];
+        var groupedColors = {
+          pattern: [
+            $.pfPaletteColors.red,
+            $.pfPaletteColors.blue,
+            $.pfPaletteColors.orange,
+            $.pfPaletteColors.green
+          ]
+        };
+
+        var groupedVerticalBarChartConfig = $().c3ChartDefaults().getDefaultGroupedBarConfig();
+        groupedVerticalBarChartConfig.bindto = '#bar-chart-6';
+        groupedVerticalBarChartConfig.axis = {
+          x: {
+            categories: groupedcCategories,
+            type: 'category'
+          }
+        };
+        groupedVerticalBarChartConfig.data = {
+          type: 'bar',
+          columns: groupedColumnsData,
+          // optional drilldown behavior
+          onclick: function (d, element) {
+            window.location = chartUrls[d.index];
+          }
+        };
+        groupedVerticalBarChartConfig.color = groupedColors;
+        var groupedVerticalBarChart = c3.generate(groupedVerticalBarChartConfig);
+      </script>
+
+
+
+
+
+      <div id="donut-chart-6" class="example-donut-chart-utilization"></div>
+      <script>
+        var c3ChartDefaults = $().c3ChartDefaults();
+        var utilizationDonutChartConfig = c3ChartDefaults.getDefaultDonutConfig('A');
+        utilizationDonutChartConfig.bindto = '#donut-chart-6';
+        utilizationDonutChartConfig.data = {
+          type: "donut",
+          columns: [
+            ["Used", 60],
+            ["Available", 40]
+          ],
+          groups: [
+            ["used", "available"]
+          ],
+          order: null
+        };
+        utilizationDonutChartConfig.size = {
+          width: 200,
+          height: 171
+        };
+
+        utilizationDonutChartConfig.tooltip = {
+          contents: $().pfGetUtilizationDonutTooltipContentsFn('MHz')
+        };
+        var utilizationDonutChart = c3.generate(utilizationDonutChartConfig);
+        $().pfSetDonutChartTitle("#donut-chart-6", "60", "MHz Used");
+      </script>
+</div>

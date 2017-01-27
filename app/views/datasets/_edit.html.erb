@@ -1,6 +1,5 @@
 <%= form_for(dataset) do |f| %>
 
-
   <% if dataset.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(dataset.errors.count, "error") %> prohibited this dataset from being saved:</h2>
@@ -13,20 +12,33 @@
     </div>
 <% end %>
 <%= f.label(:name, "Name of Dataset")%>
-<%= f.text_field :name%>
+<%= f.text_field :name, class:"form-control"%>
 <%= f.label(:term, "Term")%>
-<%= f.select(:term, options_for_select([["Spring","spring"], ['Fall',"fall"]])) %>
+<%= f.select(:term, options_for_select([["Spring","spring"], ['Fall',"fall"]]), {}, class:"form-control") %>
 <%= f.label(:year, "Year")%>
-<%= f.select :year, options_for_select([[Date.today.year,Date.today.year],[Date.today.year-1, Date.today.year-1],[Date.today.year-2, Date.today.year-2],[Date.today.year-3, Date.today.year-3],[Date.today.year-4,Date.today.year-4]]) %>
+<%= f.select :year, options_for_select([[Date.today.year,Date.today.year],[Date.today.year-1, Date.today.year-1],[Date.today.year-2, Date.today.year-2],[Date.today.year-3, Date.today.year-3],[Date.today.year-4,Date.today.year-4]]), {}, class:'form-control' %>
 <br>
 
 <%= f.label :active, "Active" %>
 <%= f.check_box :active, {:class => "myclass", :style => ""}, true, false %>
 <br>
+<hr>
+<div class="col-sm-6">
+  <%= f.label :columns, "Colum Name"%> <br>
+
 <% dataset.columns.each_with_index do |col, cell|%>
-  <%= cell+1 %> <%= f.text_field :columns, :value => col, multiple: true %> </br>
+  <%= cell+1 %> <%= f.text_field :columns, :value => col, multiple: true%> <br>
 <% end %>
+</div>
+<div class="col-sm-6">
+  <%= f.label :display_columns, "Display Name"%> <br>
+<% dataset.display_columns.each do |col| %>
+  <%= f.text_field :display_columns, :value => col, multiple: true %> <br>
+<%end%>
+</div>
+
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Save", class:"btn btn-primary" %>
   </div>
 <% end %>

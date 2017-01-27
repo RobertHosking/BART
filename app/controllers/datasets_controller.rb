@@ -51,7 +51,7 @@ class DatasetsController < ApplicationController
       #@dataset.yaml_to_sheet(@dataset.yaml_file).to_csv(Rails.root.join(@dataset.base_path, "build.csv"))
       # Create the YAML
       @dataset.columns = @dataset.get_columns
-
+      @dataset.display_columns = @dataset.columns
 
     respond_to do |format|
       if @dataset.save
@@ -108,7 +108,7 @@ class DatasetsController < ApplicationController
 
     private
     def dataset_params
-        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working, :columns => [])
+        params.require(:dataset).permit(:csv, :name, :term, :year,:original,:yaml,:working, :columns => [], :display_columns => [])
     end
 
    end

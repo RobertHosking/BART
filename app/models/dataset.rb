@@ -1,6 +1,6 @@
 class Dataset < ApplicationRecord
     serialize :columns, Array # allows :columns to be stored as an array
-
+    serialize :display_columns, Array
     def write_columns_to_sheet
       # Opens working copy spreadsheet, updates column names, and writes changes
       require 'rubyXL'
