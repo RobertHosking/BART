@@ -88,7 +88,7 @@ class Dataset < ApplicationRecord
     # BEGIN YAML QUERYING HELPER METHODS
     ######
 
-    def column(column_name)
+    def select(column_name)
       # Returns list of entries under column titled (column_name)
       require 'yaml'
       hash = YAML.load(File.read(self.yaml_file))
@@ -100,17 +100,75 @@ class Dataset < ApplicationRecord
     end
 
     def group(column_name)
-      self.column(column_name).group_by{|x| x}.values.sort
+      self.select(column_name).group_by{|x| x}.values.sort
     end
 
     def count(column_name)
       col = self.group(column_name)
       count_list = []
-      .group_by{|x| x}.values.sort
       col.each do |group|
         count_list << [group[0], group.length]
       end
       return count_list
+    end
+
+    def total(column_name)
+      col = select(column_name)
+      total = 0
+      col.each do |cell|
+        total += cell.to_i
+      end
+      return total
+    end
+
+    def average(column_name)
+      total = self.total(column_name).to_f
+      len = self.select(column_name).length.to_f
+      return total / len
+    end
+
+    def type_of(column_name)
+      def is_numeric?(obj)
+        obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+      end
+      def is_time?(obj)
+        return DateTime.parse(obj) rescue nil
+      end
+      col = self.select(column_name)
+      col_is_num = true
+      col_is_time = true
+      col.each do |cell|
+        if is_numeric? cell
+          next
+        else
+          col_is_num = false
+          break
+        end
+      end
+      if col_is_num
+        return "Number"
+      end
+      col.each do |cell|
+        if is_time? cell
+          next
+        else
+          col_is_time = false
+        end
+      end
+      if col_is_time
+        return "Time"
+      else
+        return "String"
+      end
+    end
+
+
+
+
+
+
+    def column_where(column_name, sort_by_column, sort_by_column_value)
+      # Returns column_name where sort_by_column ==
     end
 
 

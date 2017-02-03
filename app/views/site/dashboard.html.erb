@@ -13,6 +13,6 @@
 
 <% else %>
 
-  <%= @report.name %>
-
+  <% @dataset = Dataset.last %>
+  <%= @dataset.type_of('SurveyCompleteDate') %>
 <% end %>
