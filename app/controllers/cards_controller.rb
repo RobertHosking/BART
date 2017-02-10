@@ -17,8 +17,9 @@ class CardsController < ApplicationController
     @card = Card.new
     @sections = Section.all
     @datasets = Dataset.all
-  end
 
+    @column_select_options = []
+  end
   # GET /cards/1/edit
   def edit
   end

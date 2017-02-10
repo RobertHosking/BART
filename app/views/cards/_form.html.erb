@@ -10,7 +10,7 @@
       </ul>
     </div>
   <% end %>
-  <div class="form-group">
+  <div class="form-group" id="card-form">
     <%= f.label :title, "Title"%>
     <%= f.text_field :title, class: "form-control", id:"title-field"%><br>
 
@@ -21,7 +21,9 @@
     <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
     <br>
     <%= f.label :datasets, "Data Source"%>
-    <%= f.select :datasets,options_from_collection_for_select(@datasets, "id", "name", @datasets.last),{}, class: "form-control" %>
+    <%= f.select :datasets,options_from_collection_for_select(@datasets, "id", "name", @datasets.last),{}, class: "form-control", id: "dataset-select" %>
+    <br>
+
     <div class="actions">
       <%= f.submit class: "btn"%>
     </div>
@@ -77,4 +79,40 @@
     $('.card-preview').hide();
     $("#"+val).show();
   }
+
+
+//SEND TO ANOTHER FILE
+
+$("#dataset-select").change( function(){
+  $.post('/hello-world.json', { dataset_id: $(this).val() },
+    function(data){
+      buildColumnsSelect(data);
+      console.log(data);
+    });
+});
+
+$("#column-select").change( function(){
+  console.log("Im woring");
+  $.post('/hello-world2.json', { dataset_id: $("#dataset-select").val(), column_name: $(this).val() },
+    function(data){
+      console.log(data);
+    }).fail(function(){console.log("failed");});
+});
+
+function buildColumnsSelect(columns){
+  var s = $("<select id='column-select' name='selectName' />");
+  jQuery.each(columns, function(index, val){
+    $("<option />", {value: val, text: val}).appendTo(s);
+  });
+  $("#card-form").append(s);
+}
+
+
+
+
+
+
+
+
+
   </script>

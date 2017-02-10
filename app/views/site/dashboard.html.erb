@@ -14,5 +14,8 @@
 <% else %>
 
   <% @dataset = Dataset.last %>
-  <%= @dataset.type_of('SurveyCompleteDate') %>
+
+  <%= @dataset.get_columns %>
+
+  
 <% end %>
