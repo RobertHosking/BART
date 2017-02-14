@@ -17,7 +17,7 @@ BART helps Berea College organize, anaylize, and present data.
 
 1. Install [Ruby and Rails](http://railsapps.github.io/installrubyonrails-ubuntu.html)
 
-2. 'git clone https://github.com/RobertHosking/BART.git`
+2. `git clone https://github.com/RobertHosking/BART.git`
 
 3. `sudo mysql`
 
