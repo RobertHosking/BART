@@ -13,9 +13,24 @@ BART helps Berea College organize, anaylize, and present data.
 - Allow users to authenticate using Berea credintials. []
 - Define user permission scopes. []
 
-## Ruby version 2.3.1
+## Development Setup Instructions
 
-## Rails version 5.0.0.1
+1. Install [Ruby and Rails](http://railsapps.github.io/installrubyonrails-ubuntu.html)
+
+2. 'git clone https://github.com/RobertHosking/BART.git`
+
+3. `sudo mysql`
+
+    `> CREATE DATABASE BART_development;`
+    
+    `> grant all privileges on BART_development.* TO 'rails_user'@'localhost' IDENTIFIED BY 'pass';`
+
+4. Ensure `rails_user` and `pass` is specified in `config/database.yml`
+
+5. Run `rails db:migrate`
+
+6. `rails server`
+
 
 ## BART Uses:
 
