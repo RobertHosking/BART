@@ -33,27 +33,27 @@ class SiteController < ApplicationController
 # AJAX METHODS
 ##
 
-def columns
+def get_dataset_columns
   @dataset = Dataset.find(params[:dataset_id])
   respond_to do |format|
     format.json { render json: @dataset.columns }
   end
 end
 
-def actions
+def get_column_actions
   @dataset = Dataset.find(params[:dataset_id])
   type = @dataset.type_of(params[:column_name])
   if type == "Number"
     #send templates
     respond_to do |format|
-      format.json { render json: type}
+      format.json { render json: "yolo"}
     end
   elsif type == "String"
     #send templst
     respond_to do |format|
-      format.json { render json: type }
+      format.json { render json: "Swag" }
     end
-  elsif type == "Time"
+  else
     #sed templates
     respond_to do |format|
       format.json { render json: type }

@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   get 'site/index'
   get 'site/dashboard'
 
-  post '/hello-world', to: "site#columns"
-  post '/hello-world2', to: "site#actions"
+  post '/get_columns', to: "site#get_dataset_columns"
+  post '/get_actions', to: "site#get_column_actions"
 
 
   root 'site#index'
