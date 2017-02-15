@@ -16,7 +16,7 @@
       <%= f.text_field :title, class: "form-control", id:"title-field"%><br>
 
       <%= f.label :type, "Card Data Type"%>
-      <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"],['Timeline', "sparkline"]]),{}, class: "form-control", id: "card-data-type-select" %>
+      <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"]]),{}, class: "form-control", id: "card-data-type-select" %>
       <br>
       <%= f.label :level, "Data Access Level" %>
       <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
@@ -40,7 +40,7 @@
 
   <!-- RENDER ALL THE CARD TEMPLATES IN VIEWS/LAYOUTS -->
 
-  <div class="card-preview card" id="pie_chart">
+  <div class="card-preview card inline" id="pie_chart">
     <div class="center-block">
       <h5 class='card-title text-center'></h5>
       <%= render 'layouts/pie_chart'%>
@@ -48,20 +48,20 @@
   </div>
 
   <div class="card-preview card" id="bar_graph">
-    <div class="center-block">
+    <div class="">
       <h5 class='card-title text-center'></h5>
       <%= render 'layouts/bar_graph'%>
     </div>
   </div>
 
   <div class="card-preview card" id="grouped_bar_graph">
-    <div class="center-block">
+    <div class="">
       <h5 class='card-title text-center'></h5>
       <%= render 'layouts/grouped_bar_graph'%>
     </div>
   </div>
 
-  <div class="card-preview card" id="donut_chart">
+  <div class="card-preview card inline" id="donut_chart">
     <div class="center-block">
       <h5 class='card-title text-center'></h5>
       <%= render 'layouts/donut_chart'%>
@@ -71,22 +71,26 @@
   <!-- RUN JS TO UPDATE PREVIEW -->
 
   <script>
-  $('.card-preview').hide(); //hide all templates
-  show_card() // show the one currently selected
+  $( ".card-preview" ).each(function( index ) {
+    var $to_fixed = $( this );
 
-  $("#card-data-type-select").change(show_card); //when select changed
-
-  $("#title-field").keyup(function(){
-    var title = $('#title-field').val();
-    $('.card-title').text(title);
+    $to_fixed.width( $to_fixed.width() );
   });
-
 
   function show_card(){
     var val = $('#card-data-type-select').val();
     $('.card-preview').hide();
     $("#"+val).show();
   }
+  function render_text(){
+    var title = $('#title-field').val();
+    $('.card-title').text(title);
+  }
+  $('.card-preview').hide(); //hide all templates
+  show_card(); // show the one currently selected
+  $("#card-data-type-select").change(show_card).change(render_text); //when select changed
+
+  $("#title-field").keyup(render_text);
 
 
 //SEND TO ANOTHER FILE
