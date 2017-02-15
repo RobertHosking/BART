@@ -1,4 +1,4 @@
-# Berea College Anaylitics and Reporting Tool (BART)
+# [BART logo](public/logo-full.png) Berea College Anaylitics and Reporting Tool
 
 BART helps Berea College organize, anaylize, and present data.
 
