@@ -1,4 +1,6 @@
-# ![BART logo](https://github.com/RobertHosking/BART/raw/master/public/logo-full.png) Berea College Anaylitics and Reporting Tool
+# ![BART logo](https://github.com/RobertHosking/BART/raw/master/public/logo-full.png) 
+
+# Berea College Anaylitics and Reporting Tool
 
 BART helps Berea College organize, anaylize, and present data.
 
