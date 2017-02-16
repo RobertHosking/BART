@@ -108,9 +108,14 @@ function buildColumnsSelect(columns){
   jQuery.each(columns, function(index, val){
     $("<option />", {value: val, text: val}).appendTo(s);
   });
+  if ($("#column-select").length){
+    $("#column-select").replaceWith(s);
+  } else {
   $("#card-form").append('<br>');
   $("#card-form").append(l);
   $("#card-form").append(s);
+    
+  }
 
   s.change( function(){
     $.post('/get_actions.json', { dataset_id: $("#dataset-select").val(), column_name: s.val() },
