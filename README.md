@@ -79,3 +79,20 @@ BART helps Berea College organize, anaylize, and present data.
 - [roo gem](https://github.com/roo-rb/roo) for parsing spreadsheets.
 
 - [Patternfly](http://www.patternfly.org/pattern-library/#_) for data visualization.
+
+
+## Notes
+
+The following are notes from several meetings with David Slinker
+
+- Need to be able to compare a specific Department's data to the Division it belongs to and the College as a whole. This is so the supervisor can see how his/her department stacks against the rest. 
+
+- However, privacy is important. A supervisor should not be able to figure out exactly what another department's scores are. Some divisions only have 2 departments so a supervisor would be able to glean how the other department is doing based on their own scores and the division score. Not good.
+
+- Scott has a table that maps Departments to divisions. We'll need that table and make it editable from an admin interface in case of changes.
+
+- Check [this Imgur album]() for past reports to get an idea of the kinds of comparisons that are likely to be made. Of course, we want this application to be much more extensible and be able to make nearly every comparison possible from the given data.
+
+### The following are some specific comparisons that were requested
+
+- the ability to judge a supervisor's time and effort put into the evaluation. This can be checked by:
