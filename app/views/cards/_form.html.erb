@@ -13,7 +13,7 @@
   <div class="form-group card" >
     <div id="card-form">
       <%= f.label :title, "Title"%>
-      <%= f.text_field :title, class: "form-control", id:"title-field"%><br>
+      <%= f.text_field :title, class: "form-control", id:"title-field", :required => true%><br>
 
       <%= f.label :type, "Card Data Type"%>
       <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"]]),{}, class: "form-control", id: "card-data-type-select" %>
@@ -22,12 +22,12 @@
       <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
       <br>
       <%= f.label :datasets, "Data Source"%>
-      <%= f.select :datasets,options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
+      <%= f.select :datasets,options_for_select([["none", "none"]]) + options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
       </div>
     <br>
 
     <div class="actions">
-      <%= f.submit class: "btn"%>
+      <%= f.submit class: "btn", id:"card-submit", :disabled => true%>
     </div>
   </div>
 
@@ -108,9 +108,14 @@ function buildColumnsSelect(columns){
   jQuery.each(columns, function(index, val){
     $("<option />", {value: val, text: val}).appendTo(s);
   });
+  if ($("#column-select").length){
+    $("#column-select").replaceWith(s);
+  } else {
   $("#card-form").append('<br>');
   $("#card-form").append(l);
   $("#card-form").append(s);
+    
+  }
 
   s.change( function(){
     $.post('/get_actions.json', { dataset_id: $("#dataset-select").val(), column_name: s.val() },
@@ -119,5 +124,12 @@ function buildColumnsSelect(columns){
       });
   });
 }
+// disable the button when a dataset is not selected
+// we need to enable the button only when we have all of the information needed to make a card
+$("#dataset-select").change( function(){
+  if ($(this).val() == 'none'){
+    $("#card-submit").prop('disabled', true);
+  }
+});
 
   </script>
