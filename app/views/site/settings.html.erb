@@ -1,0 +1,59 @@
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav" style="margin-left:0;">
+      <li class="panel">
+          <a href=""><i class="fa fa-navicon" aria-hidden="true"> </i> <span style="margin-left:10px;">Users</span>  </a>
+      </li>
+      <li class="panel">
+          <a href=""><i class="fa fa-navicon" aria-hidden="true"> </i> <span style="margin-left:10px;">Reports</span>  </a>
+      </li>
+      <li class="panel">
+          <a href=""><i class="fa fa-navicon" aria-hidden="true"> </i> <span style="margin-left:10px;">Datasets</span>  </a>
+      </li>
+      <li class="panel">
+          <a href=""><i class="fa fa-navicon" aria-hidden="true"> </i> <span style="margin-left:10px;">Departments</span>  </a>
+      </li>
+
+    </ul>
+</div>
+
+<div id="settings-view"></div>
+
+
+<script>
+function get_partial(partial_name){
+  $.post('/get_columns.json', { dataset_id: $(this).val() },
+    function(data){
+      buildColumnsSelect(data);
+    });
+}
+</script>
+
+
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+
+<h1>Datasets</h1>
+
+<table class="table table-hover">
+
+  <tbody>
+    <% @datasets.each do |dataset| %>
+        <tr>
+        <td><%= dataset[:name] %></td>
+        <td><%= dataset.term.upcase %></td>
+        <td><%= dataset.year %></td>
+        <td><%= link_to 'Download', dataset.working_file.sub(Rails.root.join("public").to_s, ''), class: "btn"%></td>
+        <td><%= link_to 'Edit', edit_dataset_path(dataset), class: "btn" %></td>
+        <td><%= link_to 'Delete', dataset, method: :delete, data: { confirm: 'Are you sure you want to delete '+dataset.name+'?' }, class: "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dataset', new_dataset_path, class: "btn"%>

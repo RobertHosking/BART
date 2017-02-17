@@ -1,0 +1,13 @@
+<div id="actions-select-group">
+<br>
+
+<label id="actions-select"name="actions">Actions</label>
+<select  name="actions" class="form-control">
+  <% @hash[@type].each do |action|%>
+
+    <option value="<%= action['value']%>"><%= action['name']%></option>
+
+  <%end%>
+
+</select>
+</div>

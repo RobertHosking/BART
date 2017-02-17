@@ -29,9 +29,29 @@ class SiteController < ApplicationController
     end
   end
 
+  def settings
+    @datasets = Dataset.all()
+    # if admin
+    render 'site/settings'
+    #else
+    # render 404
+  end
 ##
 # AJAX METHODS
 ##
+
+def variable_test
+  require 'yaml'
+  @hash = YAML.load(File.read("public/config/actions.yml"))
+  @dataset = Dataset.find(1)
+  @type = @dataset.type_of("PositionSection")
+  if @type == "Number"
+    #send templates
+    render file:'cards/type', layout: false
+
+    end
+end
+
 
 def get_dataset_columns
   @dataset = Dataset.find(params[:dataset_id])
@@ -41,24 +61,11 @@ def get_dataset_columns
 end
 
 def get_column_actions
+  require 'yaml'
+  @hash = YAML.load(File.read("public/config/actions.yml"))
   @dataset = Dataset.find(params[:dataset_id])
-  type = @dataset.type_of(params[:column_name])
-  if type == "Number"
-    #send templates
-    respond_to do |format|
-      format.json { render json: "yolo"}
-    end
-  elsif type == "String"
-    #send templst
-    respond_to do |format|
-      format.json { render json: "Swag" }
-    end
-  else
-    #sed templates
-    respond_to do |format|
-      format.json { render json: type }
-    end
-  end
+  @type = @dataset.type_of(params[:column_name])
+  render file:'cards/type', layout: false
 end
 
 

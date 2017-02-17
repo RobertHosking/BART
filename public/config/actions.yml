@@ -1,0 +1,17 @@
+Number:
+  - name: 'Sum'
+    value: 'sum'
+  - name: 'Average'
+    value: 'average'
+  - name: 'Percent Occurance'
+    value: 'percent'
+String:
+  - name: 'Count Unique Occurances'
+    value: count
+  - name: Length
+    value: length
+  - name: Percent Occurance
+    value: percent
+Time:
+  - name: Time Functions Yay!
+    value: test
