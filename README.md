@@ -95,4 +95,13 @@ The following are notes from several meetings with David Slinker
 
 ### The following are some specific comparisons that were requested
 
-- the ability to judge a supervisor's time and effort put into the evaluation. This can be checked by:
+- the ability to judge a supervisor's time and effort put into the evaluation. Signs of Low effort include:
+1. Supervisor submitted multiple evaluations within a short period of time
+2. Few or short comments, low quality feedback
+3. If submitted multiple evaluations in short period, look for repetitive scoring.
+
+- Let the end user switch between bar charts and pie charts (version 2.0 feature)
+
+- Old reports used tables to display data. David seemed attached to those even though there may be better ways to display that kind of data. 
+
+![BART Supervisor Data Access Permissions](http://i.imgur.com/Rf66826.jpg)
