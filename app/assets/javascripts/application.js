@@ -14,8 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require d3
-
 //= require c3
 //= require bootstrap-sprockets
 //= require patternfly
+//= require cards
 //= require_tree .
