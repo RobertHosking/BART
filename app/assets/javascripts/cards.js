@@ -35,8 +35,9 @@ $("#dataset-select").change( function(){
 });
 
 function buildColumnsSelect(columns){
-  var l = $("<label for='column'>Target</label>");
+  var l = $("<label for='column'>Use</label>");
   var s = $("<select id='column-select' name='column' class='form-control'/>");
+  var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>")
   jQuery.each(columns, function(index, val){
     $("<option />", {value: val, text: val}).appendTo(s);
   });
@@ -46,8 +47,41 @@ function buildColumnsSelect(columns){
   $("#card-form").append('<br>');
   $("#card-form").append(l);
   $("#card-form").append(s);
+  $("#card-form").append(d);
 
   }
+
+  $('#select-where-checkbox').change(function() {
+
+    var a = $("<select id='column-where' name='column-where' class='form-control'/>");
+    var c = $("<label id='column-equals-label' for='column-where'>Equals</label>");
+    var b = $("<select id='column-equals' name='column-equals' class='form-control'/>");
+        if($('#select-where-checkbox').is(":checked")) {
+            jQuery.each(columns, function(index, val){
+              $("<option />", {value: val, text: val}).appendTo(a);
+            });
+            $("#card-form").append(a);
+            a.change(function(){
+              $.post('/do-action', {
+                dataset_id: $("#dataset-select").val(),
+                column_name: a.val(),
+                operation: "count"
+              }, function(data){
+                Object.keys(data).forEach(function(key)
+                {
+                  $("<option />", {value: key, text: key}).appendTo(b);
+                });
+              });
+            });
+            $("#card-form").append(c);
+            $("#card-form").append(b);
+        }
+        if($('#select-where-checkbox').is(":checked") === false){
+          $("#column-where").remove();
+          $("#column-equals-label").remove();
+          $("#column-equals").remove();
+        }
+    });
   $("#column-select").change( function(){
     $("#card-form").append(loading);
     $("#actions-select-group").remove();
@@ -59,11 +93,37 @@ function buildColumnsSelect(columns){
           $("#card-form").append(data);
         }
         loading.remove();
+        $("#actions-select").change( function(){
+          $("#card-form").append(loading);
+          $.post('/do-action', {
+            dataset_id: $("#dataset-select").val(),
+            column_name: $("#column-select").val(),
+            operation: $("#actions-select").val()
+          },
+            function(data){
+                unique_occurences(data);
+          });
+          loading.remove();
+        });
       });
+
   });
 }
 
-
+function unique_occurences(data) {
+  var cat = [];
+  var data_columns = [];
+  Object.keys(data).forEach(function(key)
+  {
+    // cat.push(key);
+    data_columns.push([key, data[key]]);
+  });
+  console.log("col: ", data_columns);
+  pieChartBottomLegend.load({
+    unload: true,
+    columns: data_columns
+  });
+}
 
 
 // disable the button when a dataset is not selected

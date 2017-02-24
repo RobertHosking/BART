@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   post '/get_columns', to: "site#get_dataset_columns"
   post '/get_actions', to: "site#get_column_actions"
-
+  post '/do-action', to: "site#do_action"
   post '/var_test', to: "site#variable_test"
 
   root 'site#index'

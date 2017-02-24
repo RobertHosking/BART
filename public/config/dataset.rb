@@ -110,42 +110,55 @@ class Dataset < ApplicationRecord
       return columns = hash[0].keys
     end
 
-    def select(column_name, where_column = nil, where_column_value = nil)
+    def select(column_name, index = nil)
+      # Returns list of entries under column titled (column_name)
+      # if index set, returns the index-th entry of the column
+      hash = self.hash
+      result = []
+      hash.each do |index, key|
+        result << key[column_name]
+      end
+      if index != nil
+        result = result[index]
+      end
+      return result
+    end
+
+    def list_length(column_name)
+      hash = self.hash
+      result = []
+      hash.each do |index, key|
+        result << [key[column_name].to_s.length, index]
+      end
+      return result
+    end
+
+    def select_where(column_name, where_column, where_column_value)
       # Returns column_name where sort_by_column == sort_by_column_value
       hash = self.hash
       entries = []
-      if where_column != nil && where_column_value != nil
-        # DO A SELECT WHERE
-        hash.each do |index, key| # each row
-          if key[where_column] == where_column_value
-            entries << key[column_name]
-          end
-        end
-      else
-        #DO A REGULAR SELECT
-        # Returns list of entries under column titled (column_name)
-        # if index set, returns the index-th entry of the column
-        hash.each do |index, key|
+      hash.each do |index, key| # each row
+        if key[where_column] == where_column_value
           entries << key[column_name]
         end
       end
       return entries
     end
 
-    def count(data)
+    def count(column_name)
       # Does a select() for column_name and groups the result into a list of
       #     lists of like values
       # E.X. [a,b,b,a,b,c,c,d] => [[a,a],[b,b,b],[c,c],[d]]
       # self.select(column_name).group_by{|x| x}.values.sort
       group_hash = Hash.new
       group_hash.default = 0
-      data.each do |value|
+      self.select(column_name).each do |value|
         group_hash[value] = group_hash[value] + 1
       end
       return group_hash
     end
 
-    def type_of(data)
+    def type_of(column_name)
       # Determines the data type of column_name
       #
       # Float, Integer => "Number"
@@ -157,9 +170,10 @@ class Dataset < ApplicationRecord
       def is_time?(obj)
         return DateTime.parse(obj) rescue nil
       end
+      col = self.select(column_name)
       col_is_num = true
       col_is_time = true
-      data.each do |cell|
+      col.each do |cell|
         if is_numeric? cell
           next
         else
@@ -170,7 +184,7 @@ class Dataset < ApplicationRecord
       if col_is_num
         return "Number"
       end
-      data.each do |cell|
+      col.each do |cell|
         if is_time? cell
           next
         else
@@ -185,19 +199,20 @@ class Dataset < ApplicationRecord
     end
 
 
-    def sum(data)
-      # assuming type_of(data) == "Number", sums that data
+    def sum(column_name)
+      # assuming type_of(column_name) == "Number", sums that column
+      col = select(column_name)
       total = 0
-      data.each do |cell|
+      col.each do |cell|
         total += cell.to_i
       end
       return total
     end
 
-    def average(data)
+    def average(column_name)
       # assuming type_of(column_name) == "Number", averages that column
-      total = self.sum(data).to_f
-      len = data.length.to_f
+      total = self.sum(column_name).to_f
+      len = self.select(column_name).length.to_f
       return total / len
     end
 
