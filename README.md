@@ -93,7 +93,7 @@ The following are notes from several meetings with David Slinker
 
 - Scott has a table that maps Departments to divisions. We'll need that table and make it editable from an admin interface in case of changes.
 
-- Check [this Imgur album]() for past reports to get an idea of the kinds of comparisons that are likely to be made. Of course, we want this application to be much more extensible and be able to make nearly every comparison possible from the given data.
+- We have scans of past reports [2014-2015](http://imgur.com/a/ITMrJ) [2012-2013](http://imgur.com/a/ClZNB) [2011](http://imgur.com/a/RG79r). Use these to get an idea of the kinds of caparisons we'll need. Of course, we want this application to be much more extensible and be able to make nearly every comparison possible from the given data.
 
 ### The following are some specific comparisons that were requested
 
