@@ -110,44 +110,31 @@ function buildColumnsSelect(columns){
   });
 }
 
-function get_random_color() {
-  var letters = '0123456789ABCDEF';
-  var color = '#'
-  
-  for (var i=0; i<6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  
-  return color;
-}
 
-function change_colors(data){
-  var chart_colors = {};
-  
-  var keys = Object.keys(data);
-  
-  for(var i=0; i<keys.length; i++){
-    chart_colors[keys[i]] = get_random_color();
-  }
-  
-  return chart_colors
-}
-
-function unique_occurences(data) {
-  var cat = [];
-  var data_columns = [];
-  Object.keys(data).forEach(function(key)
-  {
-    // cat.push(key);
-    data_columns.push([key, data[key]]);
-  });
-  console.log(data_columns);
-  pieChartBottomLegend.load({
+function load_data_bar(bar, data_columns) {
+    bar.load({
     unload: true,
     columns: data_columns
   });
+}
+
+function change_colors(bar, colors) {
+  bar.data.colors(colors);
+}
+
+
+function unique_occurences(data) {
+  load_data_bar(verticalBarChart, format_data_bar(data));
   
-  pieChartBottomLegend.data.colors(change_colors(data));
+  load_data_bar(pieChartBottomLegend, format_data_pie_donut(data));
+  
+  load_data_bar(utilizationDonutChart, format_data_pie_donut(data));
+  
+  
+  change_colors(pieChartBottomLegend, get_colors_object(data));
+  
+  change_colors(utilizationDonutChart, get_colors_object(data));
+  verticalBarChart.data.colors(change_colors(data));
 }
 
 

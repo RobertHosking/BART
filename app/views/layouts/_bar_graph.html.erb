@@ -8,21 +8,26 @@
     'https://www.bing.com/',
     'https://duckduckgo.com/'
   ];
-  var categories = ['Q1', 'Q2', 'Q3', 'Q4'];
+  
   var columnsData = [
+    ['x', 'Q1', 'Q2', 'Q3', 'Q4'],
     [ 400, 360, 320, 175]
   ];
 
-  var verticalBarChartConfig = $().c3ChartDefaults().getDefaultBarConfig(categories);
+  var verticalBarChartConfig = $().c3ChartDefaults().getDefaultBarConfig();
   verticalBarChartConfig.bindto = '#donut-chart-5';
   verticalBarChartConfig.axis = {
     x: {
-      categories: categories,
-      type: 'category'
+      type: 'category',
+      padding: {
+      left: 0,
+      right: 0,
+    }
     }
   };
   verticalBarChartConfig.data = {
     type: 'bar',
+    x: 'x',
     columns: columnsData,
     // optional drilldown behavior
     onclick: function (d, element) {
