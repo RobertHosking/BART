@@ -110,6 +110,29 @@ function buildColumnsSelect(columns){
   });
 }
 
+function get_random_color() {
+  var letters = '0123456789ABCDEF';
+  var color = '#'
+  
+  for (var i=0; i<6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  
+  return color;
+}
+
+function change_colors(data){
+  var chart_colors = {};
+  
+  var keys = Object.keys(data);
+  
+  for(var i=0; i<keys.length; i++){
+    chart_colors[keys[i]] = get_random_color();
+  }
+  
+  return chart_colors
+}
+
 function unique_occurences(data) {
   var cat = [];
   var data_columns = [];
@@ -118,11 +141,13 @@ function unique_occurences(data) {
     // cat.push(key);
     data_columns.push([key, data[key]]);
   });
-  console.log("col: ", data_columns);
+  console.log(data_columns);
   pieChartBottomLegend.load({
     unload: true,
     columns: data_columns
   });
+  
+  pieChartBottomLegend.data.colors(change_colors(data));
 }
 
 
