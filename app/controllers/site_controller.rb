@@ -40,7 +40,6 @@ class SiteController < ApplicationController
 # AJAX METHODS
 ##
 
-
 def do_action
   @dataset = Dataset.find(params[:dataset_id])
   data = @dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
@@ -70,11 +69,13 @@ end
 
 def get_column_actions
   require 'yaml'
-  @hash = YAML.load(File.read("public/config/actions.yml"))
-  @dataset = Dataset.find(params[:dataset_id])
-  data = @dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
-  @type = @dataset.type_of(data)
-  render file:'cards/type', layout: false
+  hash = YAML.load(File.read("public/config/actions.yml"))
+  dataset = Dataset.find(params[:dataset_id])
+  data = dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
+  type = dataset.type_of(data)
+   respond_to do |format|
+     format.json {render json: hash[type]}
+   end
 end
 
 

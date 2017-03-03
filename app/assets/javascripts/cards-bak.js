@@ -34,53 +34,40 @@ $("#dataset-select").change( function(){
     loading.remove();
 
 });
-
-
-function build_select(id, name, label, options) {
-  var select_div = $("<div id='"+id+"-div'>");
-  var label = $("<label for='"+name+"'>" +label+"</label>");
-  var select = $("<select id='"+id+"' name='"+name+"' class='form-control'/>");
-  jQuery.each(options, function(index, val){
-      $("<option />", {value: val, text: val}).appendTo(select);
-  });
-  label.appendTo(select_div);
-  select.appendTo(select_div);
-  return select_div
-}
-
-function add_element(id, object, target){
-  target = target || $("#card-form");
-  if ($("#"+id+"-div").length){
-    $("#"+id+"-div").replaceWith(object);
-  } else {
-    target.append('<br>');
-    target.append(object);
-  }
-}
 // BUILD COLUMN SELECT
 function buildColumnsSelect(columns){
   var form = $("#card-form");
-
-  var column_select = build_select("column-select", "column", "Use", columns);
-  var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
-  add_element("column-select", column_select );
+  var l = $("<label for='column'>Use</label>");
+  var s = $("<select id='column-select' name='column' class='form-control'/>");
+  var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>")
+  jQuery.each(columns, function(index, val){
+    $("<option />", {value: val, text: val}).appendTo(s);
+  });
+  if ($("#column-select").length){
+    $("#column-select").replaceWith(s);
+  } else {
+  form.append('<br>');
+  form.append(l);
+  form.append(s);
   form.append(d);
+  }
   // WHERE BOX CHANGE
   var where_box = $('#select-where-checkbox');
   where_box.change(function() {
-    var where_column = build_select("column-where", "column-where", "Where", columns);
-    var equals_column = build_select("column-equals", "column-equals", "Equals", columns);
-
+    var a = $("<select id='column-where' name='column-where' class='form-control'/>");
     var c = $("<label id='column-equals-label' for='column-where'>Equals</label>");
     var b = $("<select id='column-equals' name='column-equals' class='form-control'/>");
     var actions = $("#actions-select-group")
         if(where_box.is(":checked")) {
             actions.remove();
-            add_element("column-where", where_column, column_select);
-            $("#column-select").change(function(){
+            jQuery.each(columns, function(index, val){
+              $("<option />", {value: val, text: val}).appendTo(a);
+            });
+            form.append(a);
+            a.change(function(){
               $.post('/do-action', {
                 dataset_id: $("#dataset-select").val(),
-                column_name: $("#column-select").val(),
+                column_name: a.val(),
                 operation: "count"
               }, function(data){
                 Object.keys(data).forEach(function(key)
@@ -106,8 +93,11 @@ function buildColumnsSelect(columns){
     actions.remove();
     $.post('/get_actions', { dataset_id: $("#dataset-select").val(), column_name: $(this).val() },
       function(data){
-        var actions_select = build_select("actions-select", "actions", "Action", data);
-        add_element("actions-select", actions_select );
+        if ($("#actions-select").length){
+          actions.replaceWith(data);
+        } else {
+          form.append(data);
+        }
         loading.remove();
         $("#actions-select").change( function(){
           form.append(loading);

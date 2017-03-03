@@ -1,17 +1,6 @@
 Number:
-  - name: 'Sum'
-    value: 'sum'
-  - name: 'Average'
-    value: 'average'
-  - name: 'Percent Occurance'
-    value: 'percent'
+  ["sum", "average", "percent"]
 String:
-  - name: 'Count Unique Occurances'
-    value: count
-  - name: Length
-    value: length
-  - name: Percent Occurance
-    value: percent
+  ['count', 'length', 'percent']
 Time:
-  - name: Time Functions Yay!
-    value: test
+  ['time', 'time', 'time']
