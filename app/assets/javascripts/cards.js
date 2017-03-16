@@ -1,41 +1,29 @@
-$( ".card-preview" ).each(function( index ) {
-    var $to_fixed = $( this );
+// functions
 
-    $to_fixed.width( $to_fixed.width() );
-  });
-
-  function show_card(){
-    var val = $('#card-data-type-select').val();
-    $('.card-preview').hide();
-    $("#"+val).show();
+/**
+ * adds and element to another element
+ * @param {string} id - the id of the element being added
+ * @param {jquery.Object} object - the object being added
+ * @param {jqeury.Object} target - where the object is being added to
+ **/
+function add_element(id, object, target){
+  target = target || $("#card-form");
+  if ($("#"+id+"-div").length){
+    $("#"+id+"-div").replaceWith(object);
+  } else {
+    target.append('<br>');
+    target.append(object);
   }
+}
 
-  function render_text(){
-    var title = $('#title-field').val();
-    $('.card-title').text(title);
-  }
-
-  $('.card-preview').hide(); //hide all templates
-  show_card(); // show the one currently selected
-  $("#card-data-type-select").change(show_card).change(render_text); //when select changed
-  $("#title-field").keyup(render_text);
-
-
-//SEND TO ANOTHER FILE
-
-var loading = $('<br><img width="50px" src="/loading.svg" class="center-block">');
-// DATASET CHANGE
-$("#dataset-select").change( function(){
-    $("#card-form").append(loading);
-  $.post('/get_columns.json', { dataset_id: $(this).val() },
-    function(data){
-      buildColumnsSelect(data);
-    });
-    loading.remove();
-
-});
-
-
+/**
+ * Builds a select complete with id, name and label
+ * @param {string} id - id of select
+ * @param {string} name - name of select
+ * @param {string} label - label text
+ * @param {option} options - the options of the select
+ * @returns {div} div element containing select and label
+ **/
 function build_select(id, name, label, options) {
   var select_div = $("<div id='"+id+"-div'>");
   var label = $("<label for='"+name+"'>" +label+"</label>");
@@ -48,81 +36,8 @@ function build_select(id, name, label, options) {
   return select_div
 }
 
-function add_element(id, object, target){
-  target = target || $("#card-form");
-  if ($("#"+id+"-div").length){
-    $("#"+id+"-div").replaceWith(object);
-  } else {
-    target.append('<br>');
-    target.append(object);
-  }
-}
-// BUILD COLUMN SELECT
-function buildColumnsSelect(columns){
-  var form = $("#card-form");
-
-  var column_select = build_select("column-select", "column", "Use", columns);
-  var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
-  add_element("column-select", column_select );
-  form.append(d);
-  // WHERE BOX CHANGE
-  var where_box = $('#select-where-checkbox');
-  where_box.change(function() {
-    var where_column = build_select("column-where", "column-where", "Where", columns);
-    var equals_column = build_select("column-equals", "column-equals", "Equals", columns);
-
-    var c = $("<label id='column-equals-label' for='column-where'>Equals</label>");
-    var b = $("<select id='column-equals' name='column-equals' class='form-control'/>");
-    var actions = $("#actions-select-group")
-        if(where_box.is(":checked")) {
-            actions.remove();
-            add_element("column-where", where_column, column_select);
-            $("#column-select").change(function(){
-              $.post('/do-action', {
-                dataset_id: $("#dataset-select").val(),
-                column_name: $("#column-select").val(),
-                operation: "count"
-              }, function(data){
-                Object.keys(data).forEach(function(key)
-                {
-                  $("<option />", {value: key, text: key}).appendTo(b);
-                });
-              });
-            });
-            form.append(c);
-            form.append(b);
-            form.append(actions);
-        }
-        if(where_box.is(":checked") === false){
-          $("#column-where").remove();
-          $("#column-equals-label").remove();
-          $("#column-equals").remove();
-        }
-    });
-    // COLUMN SELECT CHANGE
-  $("#column-select").change( function(){
-    var actions = $("#actions-select-group")
-    form.append(loading);
-    actions.remove();
-    $.post('/get_actions', { dataset_id: $("#dataset-select").val(), column_name: $(this).val() },
-      function(data){
-        var actions_select = build_select("actions-select", "actions", "Action", data);
-        add_element("actions-select", actions_select );
-        loading.remove();
-        $("#actions-select").change( function(){
-          form.append(loading);
-          $.post('/do-action', {
-            dataset_id: $("#dataset-select").val(),
-            column_name: $("#column-select").val(),
-            operation: $("#actions-select").val()
-          },
-            function(data){
-                unique_occurences(data);
-          });
-          loading.remove();
-        });
-      });
-  });
+function change_colors(bar, color) {
+  bar.data.colors(color);
 }
 
 function load_data_bar(bar, data_columns) {
@@ -133,9 +48,21 @@ function load_data_bar(bar, data_columns) {
   });
 }
 
-function change_colors(bar, color) {
-  bar.data.colors(color);
+/**
+ * Gets what is written in the title field
+ * and writes it into the card
+ **/
+function render_text(){
+    var title = $('#title-field').val();
+    $('.card-title').text(title);
 }
+
+function show_card(){
+    var val = $('#card-data-type-select').val();
+    $('.card-preview').hide();
+    $("#"+val).show();
+  }
+
 
 function unique_occurences(data) {
   load_data_bar(verticalBarChart, format_data_bar(data));
@@ -146,6 +73,140 @@ function unique_occurences(data) {
   change_colors(verticalBarChart, get_colors_object(data));
   //verticalBarChart.data.colors(change_colors(data));
 }
+
+// AJAX calls
+
+function getColumns (data) {
+  var url = "/get_columns.json";
+    return $.ajax({
+        cache:      false,
+        url:        url,
+        dataType:   "json",
+        type:       "post",
+        data:       data
+    });
+}
+
+function getActions(data) {
+  var url = "/get_actions"
+  return $.ajax({
+        cache:      false,
+        url:        url,
+        dataType:   "json",
+        type:       "post",
+        data:       data
+    });
+}
+
+function doAction(data){
+  var url = "/do-action" // this is a different pattern to the url it can be confusing.
+  return $.ajax({
+        cache:      false,
+        url:        url,
+        dataType:   "json",
+        type:       "post",
+        data:       data
+    });
+}
+
+
+
+$('#card-form').on(
+  'change', 
+  '#select-where-checkbox', function() {
+    console.log($("#dataset-select").val())
+  getColumns(
+    {dataset_id: $("#dataset-select").val()})
+    .done(
+      function(columns){
+        var where_column = build_select("column-where", "column-where", "Where", columns);
+        var equals_column = build_select("column-equals", "column-equals", "Equals", columns);
+        
+        add_element("column-where", where_column, $("#column-select-div"));
+        add_element("column-equals", equals_column, $("#column-select-div")); 
+    })
+  })
+  
+  
+// BUILD COLUMN SELECT
+function buildColumnsSelect(columns){
+  var form = $("#card-form");
+
+  var column_select = build_select("column-select", "column", "Use", columns);
+  var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
+  add_element("column-select", column_select );
+  form.append(d);
+  
+  
+}
+$('#card-form').on('change', '#actions-select', function(){
+  doAction({
+    dataset_id: $('#dataset-select').val(),
+    column_name: $('#column_name').val(),
+    operation: $('#actions-select').val()
+  }).done(function(action_result) {
+    console.log(action_result)
+    unique_occurences(action_result); // this could be a switch statement
+  })
+})
+
+// the way to attach an event to an element that doesn't exists yet
+$('#card-form').on('change', '#column-select', function() {
+  getActions(
+    { 
+      dataset_id: $("#dataset-select").val(), 
+      column_name: $('#column-select').val() 
+    }).done(function(actions) {
+      var actions_select = build_select("actions-select", "actions", "Action", actions);
+      add_element("actions-select", actions_select );
+    })
+  
+});
+
+
+
+
+
+
+// Story
+
+// in the beginning there was only a static form showing title, card type, access level, and datasource
+// there were also some charts 
+
+// this makes the width of the card
+$( ".card-preview" ).each(function( index ) {
+    var $to_fixed = $( this );
+
+    $to_fixed.width( $to_fixed.width() );
+  });
+
+  
+// he saw that he could not have all of the charts show at the same time so he hid all but one
+$('.card-preview').hide(); //hide all templates
+show_card(); // show the one currently selected
+
+// he created quantum tunneling to bind the events of the title to the card 
+$("#card-data-type-select").change(show_card).change(render_text); //when select changed
+$("#title-field").keyup(render_text);
+
+
+// when the dataset changes the 
+$("#dataset-select").change( function(){
+    $("#card-form").append(loading);
+  getColumns({ dataset_id: $(this).val() }).done(
+    function(data){
+      var column_select = build_select("column-select", "column", "Use", data);
+      add_element("column-select", column_select );
+      var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
+      add_element("checkbox", d);
+    });
+    loading.remove();
+
+});
+
+
+
+
 
 // disable the button when a dataset is not selected
 // we need to enable the button only when we have all of the information needed to make a card
