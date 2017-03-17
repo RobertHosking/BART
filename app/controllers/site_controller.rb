@@ -39,22 +39,13 @@ class SiteController < ApplicationController
 ##
 # AJAX METHODS
 ##
-
+#require "/app/lib/editor.rb"
+include Editor
 def do_action
   @dataset = Dataset.find(params[:dataset_id])
   data = @dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
+  result = Editor.evaluate(params[:dataset_id], data, params[:operation])
 
-  if params[:operation] == 'sum'
-    result = @dataset.sum(data)
-  elsif params[:operation] == 'average'
-    result = @dataset.average(data)
-  elsif params[:operation] == 'percent'
-    result = @dataset.sum(data)
-  elsif params[:operation] == 'count'
-    result = @dataset.count(data)
-  elsif params[:operation] == 'length'
-    result = @dataset.list_length(data)
-  end
   respond_to do |format|
     format.json {render json: result}
   end
