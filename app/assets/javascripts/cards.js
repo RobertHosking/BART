@@ -142,10 +142,9 @@ function buildColumnsSelect(columns){
 $('#card-form').on('change', '#actions-select', function(){
   doAction({
     dataset_id: $('#dataset-select').val(),
-    column_name: $('#column_name').val(),
+    column_name: $('#column-select').val(),
     operation: $('#actions-select').val()
   }).done(function(action_result) {
-    console.log(action_result)
     unique_occurences(action_result); // this could be a switch statement
   })
 })
