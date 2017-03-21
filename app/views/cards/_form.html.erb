@@ -16,7 +16,7 @@
       <%= f.text_field :title, class: "form-control", id:"title-field", :required => true%><br>
 
       <%= f.label :type, "Card Data Type"%>
-      <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"]]),{}, class: "form-control", id: "card-data-type-select" %>
+      <%= f.select :type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"],["Text", "text"]]),{}, class: "form-control", id: "card-data-type-select" %>
       <br>
       <%= f.label :level, "Data Access Level" %>
       <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
@@ -33,6 +33,7 @@
 
 <% end %>
 </div>
+
 
 <div class="col-sm-4">
   <h1> Preview </h1>
@@ -68,6 +69,47 @@
     </div>
   </div>
 
+  <div class="card-preview card inline" id="text">
+    <div class="center-block">
+      <div id="editor">
+        <p>Hello World!</p>
+        <p>Some initial <strong>bold</strong> text</p>
+        <p><br></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var toolbarOptions = [
+    ['bold', 'italic', 'underline'],        // toggled buttons
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+    ['preview']
+  ];
+
+  var quill = new Quill('#editor', {
+    modules: {
+      toolbar: toolbarOptions
+    },
+    theme: 'snow'
+  });
+$(".ql-preview").click(function(){
+  console.log($('.ql-editor').html());
+});
+  </script>
+
+  <style>
+  .ql-preview:after {
+    font-family: FontAwesome;
+     content: "\f06e";
+}
+  </style>
   <!-- MOVED JS TO app/assets/javascripts/cards.js -->
   <%= javascript_include_tag 'chart_functions' %>
   <%= javascript_include_tag 'cards' %>
