@@ -33,5 +33,5 @@ function format_data_pie_donut(data) {
     data_columns.push([key, data[key]]);
   });
 
-  return data_columns;
+  return [["Title", "number"], data_columns];
 }

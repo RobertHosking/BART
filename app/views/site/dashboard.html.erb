@@ -13,9 +13,8 @@
 
 <% else %>
 
-  <% @dataset = Dataset.last %>
+  <% @dataset = Dataset.find(1) %>
+  <%= @dataset.count(@dataset.select("PositionLevel", "PositionName", "Accompanist I")) %>
 
-  <%= @dataset.get_columns %>
 
-  
 <% end %>

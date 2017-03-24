@@ -189,7 +189,9 @@ class Dataset < ApplicationRecord
       # assuming type_of(data) == "Number", sums that data
       total = 0
       data.each do |cell|
-        total += cell.to_i
+        if cell.to_i.to_s == cell || cell.to_i == cell
+          total += cell.to_i
+        end
       end
       return total
     end
@@ -201,6 +203,21 @@ class Dataset < ApplicationRecord
       return total / len
     end
 
+    def percent(data)
+      percents = Hash.new
+      count(data).each do |key, val|
+        percents[key] = (val.to_f/data.length)* 100
+      end
+      return percents
+    end
+
+    def select_unique(data)
+      unique_values = []
+      count(data).each do |key, val|
+        unique_values << key
+      end
+      return unique_values
+    end
     ######
     # END YAML QUERYING HELPER METHODS
     ######

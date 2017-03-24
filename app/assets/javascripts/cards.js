@@ -1,3 +1,6 @@
+
+
+
 // functions
 
 /**
@@ -112,7 +115,7 @@ function doAction(data){
 
 
 $('#card-form').on(
-  'change', 
+  'change',
   '#select-where-checkbox', function() {
     console.log($("#dataset-select").val())
   getColumns(
@@ -120,14 +123,29 @@ $('#card-form').on(
     .done(
       function(columns){
         var where_column = build_select("column-where", "column-where", "Where", columns);
-        var equals_column = build_select("column-equals", "column-equals", "Equals", columns);
-        
         add_element("column-where", where_column, $("#column-select-div"));
-        add_element("column-equals", equals_column, $("#column-select-div")); 
     })
   })
-  
-  
+
+  $('#card-form').on(
+    'change',
+    '#column-where', function() {
+      console.log($("#dataset-select").val())
+    doAction(
+      {
+        dataset_id: $("#dataset-select").val(),
+        column_name: $("#column-where").val(),
+        operation: "values"
+    })
+      .done(
+        function(values){
+          var equals_column = build_select("column-equals", "column-equals", "Equals", values);
+          add_element("column-equals", equals_column, $("#column-select-div"));
+      })
+    })
+
+
+
 // BUILD COLUMN SELECT
 function buildColumnsSelect(columns){
   var form = $("#card-form");
@@ -136,8 +154,8 @@ function buildColumnsSelect(columns){
   var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
   add_element("column-select", column_select );
   form.append(d);
-  
-  
+
+
 }
 $('#card-form').on('change', '#actions-select', function(){
   doAction({
@@ -152,59 +170,65 @@ $('#card-form').on('change', '#actions-select', function(){
 // the way to attach an event to an element that doesn't exists yet
 $('#card-form').on('change', '#column-select', function() {
   getActions(
-    { 
-      dataset_id: $("#dataset-select").val(), 
-      column_name: $('#column-select').val() 
+    {
+      dataset_id: $("#dataset-select").val(),
+      column_name: $('#column-select').val()
     }).done(function(actions) {
       var actions_select = build_select("actions-select", "actions", "Action", actions);
       add_element("actions-select", actions_select );
     })
-  
+
 });
-
-
-
-
 
 
 // Story
 
 // in the beginning there was only a static form showing title, card type, access level, and datasource
-// there were also some charts 
+// there were also some charts
 
 // this makes the width of the card
-$( ".card-preview" ).each(function( index ) {
-    var $to_fixed = $( this );
+function setCardWidth(){
+  $( ".card-preview" ).each(function( index ) {
+      var $to_fixed = $( this );
 
-    $to_fixed.width( $to_fixed.width() );
-  });
+      $to_fixed.width( $to_fixed.width() );
+    });
+}
 
-  
+setCardWidth();
+
+function triggerResize(){
+  window.dispatchEvent(new Event('resize'));
+}
+
+
 // he saw that he could not have all of the charts show at the same time so he hid all but one
 $('.card-preview').hide(); //hide all templates
 show_card(); // show the one currently selected
 
-// he created quantum tunneling to bind the events of the title to the card 
-$("#card-data-type-select").change(show_card).change(render_text); //when select changed
+// he created quantum tunneling to bind the events of the title to the card
+$("#card-data-type-select").change(show_card).change(triggerResize).change(render_text); //when select changed
 $("#title-field").keyup(render_text);
 
 
-// when the dataset changes the 
+// when the dataset changes the
 $("#dataset-select").change( function(){
-    $("#card-form").append(loading);
+  // remove "Where" checkbox and label if it already exists
+  $("#column-select-div + br").remove(); // remove the <br> before the checkbox
+  $("#select-where-checkbox").remove();
+  $("#where-label").remove();
+  // add the "Where" box
+  $("#card-form").append(loading);
   getColumns({ dataset_id: $(this).val() }).done(
     function(data){
+      var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label id='where-label' for='select-where-checkbox'>Where</label>");
       var column_select = build_select("column-select", "column", "Use", data);
       add_element("column-select", column_select );
-      var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label for='select-where-checkbox'>Where</label>");
       add_element("checkbox", d);
     });
     loading.remove();
 
 });
-
-
-
 
 
 // disable the button when a dataset is not selected
