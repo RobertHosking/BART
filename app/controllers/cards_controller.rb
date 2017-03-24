@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
-
+  skip_before_filter  :verify_authenticity_token
   # GET /cards
   # GET /cards.json
   def index
@@ -23,7 +23,13 @@ class CardsController < ApplicationController
   # GET /cards/1/edit
   def edit
   end
-
+  
+  include Editor
+  
+  def preview
+    @preview = Editor.text_parse(params[:html])
+    
+  end
   # POST /cards
   # POST /cards.json
   def create
