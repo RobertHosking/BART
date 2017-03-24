@@ -51,6 +51,8 @@ function load_data_bar(bar, data_columns) {
   });
 }
 
+
+
 /**
  * Gets what is written in the title field
  * and writes it into the card
@@ -112,7 +114,29 @@ function doAction(data){
     });
 }
 
+function getPreview(){
+  var url = "/cards/text/preview" // this is a different pattern to the url it can be confusing.
+  return $.ajax({
+        cache:      false,
+        url:        url,
+        type:       "post",
+        data:       {html: $(".ql-editor").html()}
+    });
+}
 
+
+$(".ql-preview").click(function(){
+  console.log("Click");
+  getPreview().done(
+    function(html){
+      console.log(html);
+      $("#previewModal").remove();
+      $('body').append(html);
+     $("#previewModal").modal('show');
+    }).fail(function(jobj, status, server_error) {
+    alert( "server error", server_error );
+  })
+});
 
 $('#card-form').on(
   'change',
@@ -163,6 +187,7 @@ $('#card-form').on('change', '#actions-select', function(){
     column_name: $('#column-select').val(),
     operation: $('#actions-select').val()
   }).done(function(action_result) {
+    console.log(action_result)
     unique_occurences(action_result); // this could be a switch statement
   })
 })

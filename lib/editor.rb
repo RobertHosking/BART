@@ -1,14 +1,12 @@
 module Editor
   def self.text_parse(html)
-    vars_to_replace = self.get_vars(html, '%%')
+    vars_to_replace = self.get_vars(html, '~~')
     result_text = html
     puts "result",result_text
     vars_to_replace.each do |variable|
       result = self.do_math(variable)
-      result_text = replace_var(result_text, "%%%s%%" % [variable], result)
-
+      result_text = replace_var(result_text, "~~%s~~" % [variable], result)
     end
-
     return result_text
   end
 
@@ -20,15 +18,15 @@ module Editor
   def self.evaluate(dataset_id, column, action) # var = "/dataset/column/action"
     dataset = Dataset.find(dataset_id)
       if action == 'sum'
-        result = dataset.sum(column)
+        result = dataset.sum(dataset.select(column))
       elsif action == 'average'
-        result = dataset.average(column)
+        result = dataset.average(dataset.select(column))
       elsif action == 'percent'
-        result = dataset.sum(column)
+        result = dataset.sum(dataset.select(column))
       elsif action == 'count'
-        result = dataset.count(column)
+        result = dataset.count(dataset.select(column))
       elsif action == 'length'
-        result = dataset.list_length(column)
+        result = dataset.list_length(dataset.select(column)).to_s
       end
       return result
   end

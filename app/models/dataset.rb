@@ -218,6 +218,10 @@ class Dataset < ApplicationRecord
       end
       return unique_values
     end
+
+    def list_length(data)
+      return data.length
+    end
     ######
     # END YAML QUERYING HELPER METHODS
     ######

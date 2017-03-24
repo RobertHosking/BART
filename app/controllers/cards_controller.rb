@@ -23,12 +23,13 @@ class CardsController < ApplicationController
   # GET /cards/1/edit
   def edit
   end
-  
+
   include Editor
-  
+
   def preview
     @preview = Editor.text_parse(params[:html])
-    
+    render "cards/preview", :layout => false
+
   end
   # POST /cards
   # POST /cards.json
