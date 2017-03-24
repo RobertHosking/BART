@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'site#dashboard'
   post '/dashboard', to: 'site#dashboard'
+  
+  post '/cards/text/preview', to: 'cards#preview'
+  
   resources :reports
   resources :cards
   resources :sections

@@ -1,11 +1,20 @@
 module Editor
-  def text_parse(html_content)
+  def self.text_parse(html)
+    vars_to_replace = self.get_vars(html, '%%')
+    result_text = html
+    puts "result",result_text
+    vars_to_replace.each do |variable|
+      result = self.do_math(variable)
+      result_text = replace_var(result_text, "%%%s%%" % [variable], result)
 
+    end
+
+    return result_text
   end
 
-  def do_math(var)
+  def self.do_math(var)
     dataset_id,column,action = var.split("/")
-    evaluate(dataset_id,column, action)
+    return self.evaluate(dataset_id,column, action)
   end
 
   def self.evaluate(dataset_id, column, action) # var = "/dataset/column/action"
@@ -24,20 +33,20 @@ module Editor
       return result
   end
 
-  def replace_var(content, original_var, new_var)
+  def self.replace_var(content, original_var, new_var)
     return content.gsub(original_var, new_var)
   end
 
-  def get_var(content, delimiter)
+  def self.get_vars(content, delimiter)
     content_variables = []
-    if content.scan(/(?=#{delimiter})/).count.odd?
+    if content.count(delimiter).odd?
       raise "Unexpected #{delimiter} in text content"
     end
-
-    while content.include? delimiter
-      con_var =  content[/#{delimiter}(.*?)#{delimiter}/m, 1]
+    text = content
+    while text.include? delimiter
+      con_var =  text[/#{delimiter}(.*?)#{delimiter}/m, 1]
       content_variables << con_var
-      content = content.split(delimiter+con_var+delimiter).join(" ")
+      text = text.split(delimiter+con_var+delimiter).join(" ")
     end
     return content_variables
   end
