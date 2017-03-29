@@ -1,6 +1,6 @@
-
-
-
+/* global $, jQuery, verticalBarChart, format_data_bar */
+/* global pieChartBottomLegend, format_data_pie_donut */
+/* global utilizationDonutChart, get_colors_object */
 // functions
 
 /**
@@ -251,7 +251,6 @@ $("#dataset-select").change( function(){
       add_element("column-select", column_select );
       add_element("checkbox", d);
     });
-    loading.remove();
 
 });
 
