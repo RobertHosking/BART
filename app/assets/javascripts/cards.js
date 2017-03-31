@@ -1,6 +1,6 @@
-/* global $, jQuery, verticalBarChart, format_data_bar */
-/* global pieChartBottomLegend, format_data_pie_donut */
-/* global utilizationDonutChart, get_colors_object */
+
+
+
 // functions
 
 /**
@@ -243,7 +243,7 @@ $("#dataset-select").change( function(){
   $("#select-where-checkbox").remove();
   $("#where-label").remove();
   // add the "Where" box
-  $("#card-form").append(loading);
+  //$("#card-form").append(loading);
   getColumns({ dataset_id: $(this).val() }).done(
     function(data){
       var d = $("<input type='checkbox' id='select-where-checkbox' value='select-where'> <label id='where-label' for='select-where-checkbox'>Where</label>");
@@ -251,6 +251,7 @@ $("#dataset-select").change( function(){
       add_element("column-select", column_select );
       add_element("checkbox", d);
     });
+    //loading.remove();
 
 });
 

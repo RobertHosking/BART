@@ -4,12 +4,13 @@ class CreateCards < ActiveRecord::Migration[5.0]
         t.integer :section_id
         t.string :title
         t.string :level # indiviidual, dept, division, school wide
-        t.string :datasets # what datasets does it have access to
-        t.integer :permission
-        t.boolean :visible
         t.string :type # bar, pie, line, etc
-        t.string :columns # [[dataset, column], [dataset, column]] 
-
+        t.integer :dataset_id # additional datasets
+        t.string :column # Column name
+        t.string :where_column
+        t.string :where_equals
+        t.string :action
+        t.text :text
         # enter specific fields for types below
         t.timestamps
     end

@@ -21,8 +21,8 @@
       <%= f.label :level, "Data Access Level" %>
       <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
       <br>
-      <%= f.label :datasets, "Data Source"%>
-      <%= f.select :datasets,options_for_select([["none", "none"]]) + options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
+      <%= f.label :dataset_id, "Data Source"%>
+      <%= f.select :dataset_id,options_for_select([["none", "none"]]) + options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
       </div>
     <br>
 

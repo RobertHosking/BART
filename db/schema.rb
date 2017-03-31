@@ -16,13 +16,15 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.integer  "section_id"
     t.string   "title"
     t.string   "level"
-    t.string   "datasets"
-    t.integer  "permission"
-    t.boolean  "visible"
     t.string   "type"
-    t.string   "columns"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "dataset_id"
+    t.string   "column"
+    t.string   "where_column"
+    t.string   "where_equals"
+    t.string   "action"
+    t.text     "text",         limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "datasets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -52,28 +52,20 @@ class Dataset < ApplicationRecord
       # +roo_object+ object created by Roo::Spreadsheet
         require 'roo'
         require 'yaml'
-        # get headers
-        header = roo_object.row(1)
-        # iterate pages in a sheet
-        yaml_hash = Hash[] # the whole hash
-        row_hash = Hash[]
-        col_hash = Hash[]
-        roo_object.each_with_pagename do |name, sheet|
-            # iterate rows
-            row = 0
-            for i in 2..roo_object.last_row()
-              row_hash = Hash[] # a single row
-              # iterate cells in a row
-              col = 0
-              roo_object.row(i).each do |cell|
-                  row_hash.store(header[col], cell)
-                  col += 1
-              end # cell
-              yaml_hash.store(row ,row_hash)
-              row += 1
-            end # row
-        end # sheet
-        return yaml_hash.to_yaml
+      yaml_hash = Hash.new
+
+      roo_object.each_with_pagename do |name, sheet|
+        num_columns = roo_object.last_column
+        for i in 1..num_columns
+          column_hash = Hash.new
+          column = roo_object.column(i)
+          header = column[0]
+          column.each do |cell|
+              yaml_hash[header] << cell
+          end # cell
+        end
+      end
+      return yaml_hash
     end
     #####
     # END DATASET CREATE METHODS
@@ -137,12 +129,13 @@ class Dataset < ApplicationRecord
       #     lists of like values
       # E.X. [a,b,b,a,b,c,c,d] => [[a,a],[b,b,b],[c,c],[d]]
       # self.select(column_name).group_by{|x| x}.values.sort
-      group_hash = Hash.new
-      group_hash.default = 0
-      data.each do |value|
-        group_hash[value] = group_hash[value] + 1
-      end
-      return group_hash
+      # group_hash = Hash.new
+      # group_hash.default = 0
+      # data.each do |value|
+      #   group_hash[value] = group_hash[value] + 1
+      # end
+      # return group_hash
+      return data.reduce(Hash.new(0)) { |a, b| a[b] += 1; a }
     end
 
     def type_of(data)
