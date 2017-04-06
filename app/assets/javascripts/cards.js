@@ -30,7 +30,7 @@ function add_element(id, object, target){
 function build_select(id, name, label, options) {
   var select_div = $("<div id='"+id+"-div'>");
   var label = $("<label for='"+name+"'>" +label+"</label>");
-  var select = $("<select id='"+id+"' name='"+name+"' class='form-control'/>");
+  var select = $("<select id='"+id+"' name='card["+name+"]' class='form-control'/>");
   jQuery.each(options, function(index, val){
       $("<option />", {value: val, text: val}).appendTo(select);
   });
@@ -189,6 +189,7 @@ $('#card-form').on('change', '#actions-select', function(){
   }).done(function(action_result) {
     console.log(action_result)
     unique_occurences(action_result); // this could be a switch statement
+    $("#card-submit").prop('disabled', false);
   })
 })
 
