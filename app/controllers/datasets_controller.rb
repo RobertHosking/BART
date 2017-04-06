@@ -45,6 +45,7 @@ class DatasetsController < ApplicationController
       # Create the directory if it does not exist
       Dataset.write_to(@dataset.original_file, uploaded_io.read)
       yaml = Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset[:original_file]))
+      puts yaml
       Dataset.write_to(@dataset.yaml_file, yaml)
       #Create a Working Copy
       FileUtils::cp(@dataset.original_file, @dataset.working_file)
