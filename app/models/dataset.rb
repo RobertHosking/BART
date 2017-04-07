@@ -36,7 +36,7 @@ class Dataset < ApplicationRecord
       require 'yaml'
 
       hash = YAML.load(File.read(yaml_file))
-      columns = hash[0].keys
+      columns = hash.keys
       oo = Roo::Spreadsheet.open(self.original_file)
       #set column names
       columns.each_with_index do |name, col|
@@ -52,20 +52,21 @@ class Dataset < ApplicationRecord
       # +roo_object+ object created by Roo::Spreadsheet
         require 'roo'
         require 'yaml'
-      yaml_hash = Hash.new
+      yaml_hash = Hash[]
 
       roo_object.each_with_pagename do |name, sheet|
         num_columns = roo_object.last_column
         for i in 1..num_columns
-          column_hash = Hash.new
+          column_arr = []
           column = roo_object.column(i)
           header = column[0]
-          column.each do |cell|
-              yaml_hash[header] << cell
-          end # cell
+          for c in 2..roo_object.last_row()
+            column_arr << column[c]
+          end
+          yaml_hash.store(header, column_arr)
         end
       end
-      return yaml_hash
+      return yaml_hash.to_yaml
     end
     #####
     # END DATASET CREATE METHODS
@@ -99,7 +100,7 @@ class Dataset < ApplicationRecord
     def get_columns
       # Returns a list of dataset column names
       hash = self.hash
-      return columns = hash[0].keys
+      return columns = hash.keys
     end
 
     def select(column_name, where_column = nil, where_column_value = nil)
@@ -108,18 +109,19 @@ class Dataset < ApplicationRecord
       entries = []
       if where_column != nil && where_column_value != nil
         # DO A SELECT WHERE
-        hash.each do |index, key| # each row
-          if key[where_column] == where_column_value
-            entries << key[column_name]
+        indexes = []
+        hash[where_column].length.times do |i| # each row
+          if hash[where_column][i] == where_column_value
+            indexes << i
           end
+        end
+        indexes.each do |index|
+          entries << hash[column_name][index]
         end
       else
         #DO A REGULAR SELECT
         # Returns list of entries under column titled (column_name)
-        # if index set, returns the index-th entry of the column
-        hash.each do |index, key|
-          entries << key[column_name]
-        end
+        entries = hash[column_name]
       end
       return entries
     end
