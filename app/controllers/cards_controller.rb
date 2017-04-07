@@ -35,8 +35,17 @@ class CardsController < ApplicationController
   # POST /cards.json
   def create
     puts params
-    
-    @card = Card.new(card_params)
+    @card = Card.new()
+    @card.section_id = params[:card][:section_id]
+    @card.level = params[:card][:level]
+    @card.where_equals=params[:card][:where_equals]
+    @card.title=params[:card][:title]
+    @card.column=params[:card][:column]
+    @card.chart_type=params[:card][:chart_type]
+    @card.dataset_id=params[:card][:dataset_id]
+    @card.where_column=params[:card][:where_column]
+    @card.action=params[:card][:action]
+
 
     respond_to do |format|
       if @card.save
@@ -81,6 +90,7 @@ class CardsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def card_params
-      params.fetch(:card, {})
+      params.require(:card).permit()
+      #params.fetch(:card, {})
     end
 end

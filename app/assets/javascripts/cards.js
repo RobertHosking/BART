@@ -19,6 +19,21 @@ function add_element(id, object, target){
   }
 }
 
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
 /**
  * Builds a select complete with id, name and label
  * @param {string} id - id of select
@@ -146,7 +161,7 @@ $('#card-form').on(
     {dataset_id: $("#dataset-select").val()})
     .done(
       function(columns){
-        var where_column = build_select("column-where", "column-where", "Where", columns);
+        var where_column = build_select("column-where", "where_column", "Where", columns);
         add_element("column-where", where_column, $("#column-select-div"));
     })
   })
@@ -163,7 +178,7 @@ $('#card-form').on(
     })
       .done(
         function(values){
-          var equals_column = build_select("column-equals", "column-equals", "Equals", values);
+          var equals_column = build_select("column-equals", "where_equals", "Equals", values);
           add_element("column-equals", equals_column, $("#column-select-div"));
       })
     })
@@ -200,7 +215,7 @@ $('#card-form').on('change', '#column-select', function() {
       dataset_id: $("#dataset-select").val(),
       column_name: $('#column-select').val()
     }).done(function(actions) {
-      var actions_select = build_select("actions-select", "actions", "Action", actions);
+      var actions_select = build_select("actions-select", "action", "Action", actions);
       add_element("actions-select", actions_select );
     })
 
@@ -227,6 +242,7 @@ function triggerResize(){
   window.dispatchEvent(new Event('resize'));
 }
 
+$("#section-id").val(getUrlParameter('section'));
 
 // he saw that he could not have all of the charts show at the same time so he hid all but one
 $('.card-preview').hide(); //hide all templates

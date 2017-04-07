@@ -9,10 +9,15 @@
     'https://duckduckgo.com/'
   ];
 
-  var columnsData = [
-    ['x', 'Q1', 'Q2', 'Q3', 'Q4'],
-    [ 400, 360, 320, 175]
-  ];
+
+<% if defined? @cards %>
+var columnsData = <%= raw card.javacriptify_data().to_json %>;
+<%else%>
+var columnsData = [
+  ['x', 'Q1', 'Q2', 'Q3', 'Q4'],
+  [ 400, 360, 320, 175]
+];
+<%end%>
 
   var verticalBarChartConfig = $().c3ChartDefaults().getDefaultBarConfig();
   verticalBarChartConfig.bindto = '#donut-chart-5';

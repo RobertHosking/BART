@@ -4,7 +4,7 @@ class CreateCards < ActiveRecord::Migration[5.0]
         t.integer :section_id
         t.string :title
         t.string :level # indiviidual, dept, division, school wide
-        t.string :type # bar, pie, line, etc
+        t.string :chart_type # bar, pie, line, etc
         t.integer :dataset_id # additional datasets
         t.string :column # Column name
         t.string :where_column

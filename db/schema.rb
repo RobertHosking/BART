@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.integer  "section_id"
     t.string   "title"
     t.string   "level"
-    t.string   "type"
+    t.string   "chart_type"
     t.integer  "dataset_id"
     t.string   "column"
     t.string   "where_column"
