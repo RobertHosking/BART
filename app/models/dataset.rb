@@ -100,7 +100,7 @@ class Dataset < ApplicationRecord
     def get_columns
       # Returns a list of dataset column names
       hash = self.hash
-      return columns = hash.keys
+      return hash.keys
     end
 
     def select(column_name, where_column = nil, where_column_value = nil)

@@ -20,8 +20,8 @@
     <h5 class='card-title text-center'><%= card.title%></h5>
     <% if card.chart_type == "pie_chart" %>
       <%= render 'layouts/pie_chart', :card => card%>
-    <% elsif card.chart_type == "bar_graph" %>
-      <%= render 'layouts/bar_graph', :card => card%>
+    <% elsif card.chart_type == "bar_chart" %>
+      <%= render 'layouts/bar_chart', :card => card%>
     <% end %>
   </div>
 </div>

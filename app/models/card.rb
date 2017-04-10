@@ -43,9 +43,6 @@ class Card < ApplicationRecord
     return [x_axis_categories, chart_data]
   end
 
-
-
-
   def format_data_pie_donut(data)
     data_columns = []
     data.keys.each do |key|
@@ -55,8 +52,8 @@ class Card < ApplicationRecord
     return data_columns
   end
 
-  def javacriptify_data()
-    if self.chart_type == "bar_graph"
+  def dump_data()
+    if self.chart_type == "bar_chart"
       return self.format_data(self.calc())
     elsif self.chart_type == "pie_chart"
       return self.format_data_pie_donut(self.calc())

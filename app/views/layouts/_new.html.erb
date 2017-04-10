@@ -2,9 +2,9 @@
   <% if params[:section] %>
     <% section = params[:section] %>
   <% else %>
-    <% section = "cover" %>
+    <% section = "0" %>
   <% end %>
-  <button class="circle" onclick="location.href='<%= new_card_path + "?section=" + section%>';">
+  <button style="z-index:1000" class="circle" onclick="location.href='<%= new_card_path + "?section=" + section%>';">
      <img src="plus.png" alt="" />
   </button>
 </div>

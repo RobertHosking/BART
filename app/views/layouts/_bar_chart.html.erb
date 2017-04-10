@@ -1,4 +1,13 @@
-<div id="donut-chart-5"></div>
+
+<% if defined? @cards %>
+  <% columnsData = raw card.dump_data().to_json %>
+  <% cardId = "bar"+card.id.to_s %>
+<%else%>
+  <% columnsData = raw "[['x', 'Q1', 'Q2', 'Q3', 'Q4'],[ 400, 360, 320, 175]]" %>
+  <% cardId = "preview-bar" %>
+<%end%>
+
+<div id="<%= cardId  %>"></div>
 <script>
   var c3ChartDefaults = $().c3ChartDefaults();
 
@@ -10,17 +19,13 @@
   ];
 
 
-<% if defined? @cards %>
-var columnsData = <%= raw card.javacriptify_data().to_json %>;
-<%else%>
-var columnsData = [
-  ['x', 'Q1', 'Q2', 'Q3', 'Q4'],
-  [ 400, 360, 320, 175]
-];
-<%end%>
+
+var columnsData = <%= columnsData %>;
+
+
 
   var verticalBarChartConfig = $().c3ChartDefaults().getDefaultBarConfig();
-  verticalBarChartConfig.bindto = '#donut-chart-5';
+  verticalBarChartConfig.bindto = '#<%= cardId  %>';
   verticalBarChartConfig.axis = {
     x: {
       type: 'category',

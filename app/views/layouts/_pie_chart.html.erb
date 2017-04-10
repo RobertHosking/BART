@@ -1,4 +1,12 @@
-<div id="pie-chart-7" class="example-pie-chart-bottom-legend"></div>
+<% if defined? @cards %>
+  <% columnsData = raw card.dump_data().to_json %>
+  <% cardId = "pie"+card.id.to_s %>
+<%else%>
+  <% columnsData = raw "[['Dogs', 5],['Cats', 2],['Fish', 10],['Hamsters', 2]]" %>
+  <% cardId = "preview-pie" %>
+<%end%>
+
+<div id="<%= cardId %>" class="example-pie-chart-bottom-legend"></div>
 <script>
 var c3ChartDefaults = $().c3ChartDefaults();
 
@@ -10,16 +18,9 @@ Cats: $.pfPaletteColors.blue,
 Fish: $.pfPaletteColors.orange,
 Hamsters: $.pfPaletteColors.green
 },
-<% if defined? @cards %>
-columns: <%= raw card.javacriptify_data().to_json %>,
-<%else%>
-columns: [
-['Dogs', 5],
-['Cats', 2],
-['Fish', 10],
-['Hamsters', 2]
-],
-<%end%>
+
+columns: <%= columnsData %>,
+
 
 onclick: function (d, i) { console.log("onclick", d, i); },
 onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -27,7 +28,7 @@ onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 };
 // Pie Chart Bottom Legend
 var pieChartBottomConfig = c3ChartDefaults.getDefaultPieConfig();
-pieChartBottomConfig.bindto = '#pie-chart-7';
+pieChartBottomConfig.bindto = '#<%= cardId %>';
 pieChartBottomConfig.data = pieData;
 pieChartBottomConfig.legend = {
 show: true,

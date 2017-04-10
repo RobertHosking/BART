@@ -16,7 +16,7 @@
       <%= f.text_field :title, class: "form-control", id:"title-field", :required => true%><br>
 
       <%= f.label :chart_type, "Card Data Type"%>
-      <%= f.select :chart_type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_graph"],["Grouped Bar Graph", "grouped_bar_graph"],["Donut Chart", "donut_chart"],["Text", "text"]]),{}, class: "form-control", id: "card-data-type-select" %>
+      <%= f.select :chart_type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_chart"],["Grouped Bar Graph", "grouped_bar_chart"],["Donut Chart", "donut_chart"],["Text", "text"]]),{}, class: "form-control", id: "card-data-type-select" %>
       <br>
       <%= f.label :level, "Data Access Level" %>
       <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
@@ -52,17 +52,17 @@
     </div>
   </div>
 
-  <div class="card-preview card" id="bar_graph">
+  <div class="card-preview card" id="bar_chart">
     <div class="">
       <h5 class='card-title text-center'></h5>
-      <%= render 'layouts/bar_graph'%>
+      <%= render 'layouts/bar_chart'%>
     </div>
   </div>
 
-  <div class="card-preview card" id="grouped_bar_graph">
+  <div class="card-preview card" id="grouped_bar_chart">
     <div class="">
       <h5 class='card-title text-center'></h5>
-      <%= render 'layouts/grouped_bar_graph'%>
+      <%= render 'layouts/grouped_bar_chart'%>
     </div>
   </div>
 
