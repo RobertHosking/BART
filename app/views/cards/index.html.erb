@@ -11,6 +11,7 @@
 
   <tbody>
     <% @cards.each do |card| %>
+    <%=  card.section_id.to_s + card.title + card.order.to_s %>
       <tr>
         <td><%= link_to 'Show', card %></td>
         <td><%= link_to 'Edit', edit_card_path(card) %></td>

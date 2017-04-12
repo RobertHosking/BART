@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.string   "where_equals"
     t.string   "action"
     t.text     "text",         limit: 65535
+    t.integer  "order"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end

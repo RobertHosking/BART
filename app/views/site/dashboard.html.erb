@@ -14,7 +14,7 @@
 <% else %>
 
 <% @cards.each do |card| %>
-
+<% if card.section_id.to_s == params[:section].to_s %>
 <div class="card-preview card inline">
   <div class="center-block">
     <h5 class='card-title text-center'><%= card.title%></h5>
@@ -25,7 +25,7 @@
     <% end %>
   </div>
 </div>
-
+<% end %>
 
 
 <% end %>

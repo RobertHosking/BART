@@ -11,6 +11,7 @@ class CreateCards < ActiveRecord::Migration[5.0]
         t.string :where_equals
         t.string :action
         t.text :text
+        t.integer :order
         # enter specific fields for types below
         t.timestamps
     end

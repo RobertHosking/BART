@@ -45,6 +45,7 @@ class CardsController < ApplicationController
     @card.dataset_id=params[:card][:dataset_id]
     @card.where_column=params[:card][:where_column]
     @card.action=params[:card][:action]
+    @card.order = @card.id
 
 
     respond_to do |format|
