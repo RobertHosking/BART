@@ -92,5 +92,10 @@ def get_column_actions
    end
 end
 
+def save_section_layout
+  section = Section.find(params[:section_id])
+  section.layout = params[:positionsJSON]
+  section.save
+end
 
 end

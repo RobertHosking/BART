@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.string   "where_equals"
     t.string   "action"
     t.text     "text",         limit: 65535
-    t.integer  "order"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
@@ -54,8 +53,9 @@ ActiveRecord::Schema.define(version: 20170303202848) do
   create_table "sections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.integer  "report_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "layout",     limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

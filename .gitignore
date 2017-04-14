@@ -13,6 +13,7 @@
 !/log/.keep
 !/tmp/.keep
 
+/public/datasets/*
 /config/database.yml
 
 # Ignore Byebug command history file.

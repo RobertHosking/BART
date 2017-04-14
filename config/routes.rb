@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post '/do-action', to: "site#do_action"
   post '/var_test', to: "site#variable_test"
 
+  post '/save_section_layout', to: "site#save_section_layout"
+
   root 'site#index'
 
   get '/dashboard', to: 'site#dashboard'

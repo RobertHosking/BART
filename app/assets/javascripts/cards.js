@@ -169,7 +169,7 @@ $('#card-form').on(
   $('#card-form').on(
     'change',
     '#column-where', function() {
-      console.log($("#dataset-select").val())
+      console.log($("#dataset-select").val());
     doAction(
       {
         dataset_id: $("#dataset-select").val(),
@@ -180,8 +180,8 @@ $('#card-form').on(
         function(values){
           var equals_column = build_select("column-equals", "where_equals", "Equals", values);
           add_element("column-equals", equals_column, $("#column-select-div"));
-      })
-    })
+      });
+    });
 
 
 
