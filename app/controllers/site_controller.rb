@@ -10,8 +10,17 @@ class SiteController < ApplicationController
         @section = Section.find(params[:section])
       else
         @section = Section.first
+        params[:section] = @section.id
       end
       session[:section] = @section.id
+    else
+      redirect_to '/sections/new'
+    end
+    
+    if Dataset.last
+      @no_dataset = false
+    else
+      @no_dataset = true
     end
 
     if Report.last
@@ -95,6 +104,12 @@ end
 def save_section_layout
   section = Section.find(params[:section_id])
   section.layout = params[:positionsJSON]
+  section.save
+end
+
+def change_section_name
+  section = Section.find(params[:section_id])
+  section.name = params[:name]
   section.save
 end
 

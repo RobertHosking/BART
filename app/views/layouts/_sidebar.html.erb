@@ -6,8 +6,14 @@
 
               </li>
               <% @sections.each do |section| %>
-                <li>
-                    <a href="/dashboard?section=<%= section.id %>"><i class="fa fa-navicon" aria-hidden="true"> </i> <span style="margin-left:10px;"><%= section.name %></span>  </a>
+                <li class="section-tab">
+                    <span style="display:inline-block;">
+                        <i class="control fa fa-navicon" aria-hidden="true"> </i>
+
+                    <a href="/dashboard?section=<%= section.id %>">
+                        <span id="<%= section.id %>" class="title" style="margin-left:10px;"><%= section.name %></span>
+                    </a>
+                    </span>
                 </li>
               <% end %>
 
@@ -16,3 +22,58 @@
               </li>
           </ul>
       </div>
+
+<style>
+
+.renameField{margin-left:20px;}
+</style>
+<script>
+
+function changeName(data){
+  var url = "/change_section_name" // this is a different pattern to the url it can be confusing.
+  return $.ajax({
+        cache:      false,
+        url:        url,
+        dataType:   "json",
+        type:       "post",
+        data:       data
+    });
+}
+
+$(".section-tab").mouseover(function() {
+    var control = $(this).closest('.section-tab').find('.control');
+
+    control.removeClass('fa-navicon');
+    control.addClass('fa-pencil');
+}).mouseout(function() {
+        var control = $(this).closest('.section-tab').find('.control');
+
+    control.removeClass('fa-pencil');
+    control.addClass('fa-navicon');
+});
+
+$(".control").click(function(){
+    var section = $(this).closest('.section-tab').find('.title');
+    var sectionId = section.attr('id');
+    var inputField = $("<input class='renameField' type='text' name='title' value='"+section.text()+"'>");
+    //inputField.val(section.text);
+    section.replaceWith(inputField);
+    inputField.focus().select();
+    inputField.focusout(function(){
+        var name = inputField.val();
+        changeName(
+          {
+            section_id: sectionId,
+            name: name
+        })
+          .done(
+            function(){
+            inputField.replaceWith(section);
+            section.text(name);
+          });
+        
+    });
+});
+
+    
+</script>

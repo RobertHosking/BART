@@ -2,7 +2,18 @@
 <br>
 <br>
 <br>
-<% if @report.nil? %>
+
+<% if @no_dataset %>
+<div class="card">
+    <h2 class="text-center">I don't have any datasets.</h2>
+    <br>
+    <p class="text-center">Please upload a dataset.</p>
+    <br>
+    <img class="center-block" src="upload.gif" alt="">
+</div>
+<% end %>
+
+<% if @no_dataset == false && @report.nil? %>
   <div class="card">
     <h2 class="text-center">There's nothing here.</h2>
     <br>

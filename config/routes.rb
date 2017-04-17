@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post '/var_test', to: "site#variable_test"
 
   post '/save_section_layout', to: "site#save_section_layout"
+  post '/change_section_name', to: "site#change_section_name"
+
 
   root 'site#index'
 

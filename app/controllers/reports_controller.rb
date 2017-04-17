@@ -16,13 +16,11 @@ class ReportsController < ApplicationController
   def new
     @datasets = Dataset.all
     @report = Report.new
-
   end
 
   # GET /reports/1/edit
   def edit
     @datasets = Dataset.all
-
   end
 
   # POST /reports
@@ -32,6 +30,8 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       if @report.save
+        @section = Section.new(name: "Overview", report_id: @report.id)
+        @section.save
         format.html { redirect_to '/dashboard', notice: 'Report was successfully created.' }
         format.json { render :show, status: :created, location: @report }
       else
