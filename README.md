@@ -5,21 +5,17 @@
 BART helps Berea College organize, anaylize, and present data.
 [Previous Implementation in PHP](http://sushituesday.club/share/downloads/oldSLEgenerator.zip)
 
-## Version Log
+# Summer 2017 Training Videos
 
-### Version 0.01 - Deadline: Spring 2017
-- [x] Allow admins to upload a spreadsheet as a dataset.
-- [x] Perform CRUD on dataset.
-- [x] Create "Views" for the end user.
-- [ ] Add graphs and stuff to these views.
-- [ ] Talk to Berea's databases.
-- [ ] Allow users to authenticate using Berea credintials.
-- [ ] Define user permission scopes.
+## Introduction
+[![](http://img.youtube.com/vi/neczdQL9okk/0.jpg)](https://youtu.be/neczdQL9okk)
 
-### Version 0.02
-- [ ] Admin manually creates users and defines permissions
-- [ ] Admin can redefine Division mapping
-- [ ] ...
+## Datasets
+[![](http://img.youtube.com/vi/VMO_EflRWdM/0.jpg)](https://youtu.be/VMO_EflRWdM)
+
+## Cards
+[![](http://img.youtube.com/vi/ce0ddl6OcKQ/0.jpg)](https://youtu.be/ce0ddl6OcKQ)
+
 
 ## Development Setup Instructions
 
@@ -81,7 +77,16 @@ BART helps Berea College organize, anaylize, and present data.
 
 - [roo gem](https://github.com/roo-rb/roo) for parsing spreadsheets.
 
-- [Patternfly](http://www.patternfly.org/pattern-library/#_) for data visualization.
+- [Patternfly](http://www.patternfly.org/pattern-library/#_) for data visualization. Uses c3 library.
+
+## Old Report Scans
+
+[2014-2015](http://imgur.com/a/ITMrJ) 
+
+[2012-2013](http://imgur.com/a/ClZNB) 
+
+[2011](http://imgur.com/a/RG79r)
+
 
 
 ## Notes
