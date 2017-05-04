@@ -2,7 +2,12 @@
 
 # Berea College Anaylitics and Reporting Tool
 
-BART helps Berea College organize, anaylize, and present data.
+BART is being built for the Labor Department at Berea college to perform analytics on results form the Student Labor Evaluations (SLE) and the Learning Experience Evaluations (LEE). Although, as we’ll see later on, BART is designed to be used for any data source.
+
+The SLE and LEE’s are created using SmartEvals which is a third party surveying company that is contracted by Berea College. The SLE and LEE results come to us in the form of a CSV. BART takes that CSV, stores it in the database and performs user defined calculations on it to produce charts, graphs and text to be used in the report.
+
+Previously, the Labor Program has been generating these reports using a PHP script that creates a Microsoft word document based on a template. The department would then print hundreds of copies to distribute to labor supervisors across campus. Check the Bitbucket repo readme under “Resources” to see examples of previous reports.
+
 [Previous Implementation in PHP](http://sushituesday.club/share/downloads/oldSLEgenerator.zip)
 
 # Summer 2017 Training Videos (Created by Robert Hosking)
@@ -76,6 +81,19 @@ BART helps Berea College organize, anaylize, and present data.
 |
 └──
 ```
+## Models
+BART has several models.
+
+- Report - Composed of many Sections.
+
+- Dataset - References a single CSV file’s data. The data from the file is categorized in in the database using multiple tables. (See “Design”)
+
+- Section - Designed to organize reports. Composed of many Cards.
+
+- Card - Can be charts, graphs, or rich text. Cards display the data from Datasets.
+
+- User - (not implemented yet) - Admins, supervisors, or other. Admins can create and edit reports, Supervisors can view data that pertains to them or the campus as a whole. “Others” are special exceptions who have custom viewing access that needs to be defined. (e.x. The Dean of Labor = Admin, Scott Heggen = supervisor, President Roelofs = other)
+
 ## Tools used:
 
 - [roo gem](https://github.com/roo-rb/roo) for parsing spreadsheets.
