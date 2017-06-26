@@ -25,27 +25,54 @@ Previously, the Labor Program has been generating these reports using a PHP scri
 
 ![Robert's phone number](http://i.imgur.com/hZJpGra.jpg)
 
-## Development Setup Instructions
+# Setting Up a Development Environment
 
-1. Install [Ruby and Rails](http://railsapps.github.io/installrubyonrails-ubuntu.html) - BART uses MySQL
+## Step 1: Getting Started on Cloud9:
 
-2. `git clone https://github.com/RobertHosking/BART.git`
+## Create a Workspace in Cloud9
 
-3. `cd bart/`
+a) You will want to make sure you choose to clone your repo from bitbucket. You do this by adding your git URL. Use https one.
+Paste your BART repo url inside **'Clone from Git or Mercurial URL'** query. 
+<br>Note: delete **git clone** from the url 
+<br>This gives you an empty workspace. It doesn't actually clone the whole repo but it prevents Cloud9 from creating default **Ruby on Rails** application
+in your workspace.
 
-4. `sudo mysql`
+b) On **'Choose a template'** part, make sure you choose **'Ruby Rails'** for your workspace. Afterwards, **'Ruby on Rails'** framework will automatically be installed on your workspace.
 
-    `> CREATE DATABASE bart_development;`
 
-    `> grant all privileges on bart_development.* TO 'rails_user'@'localhost' IDENTIFIED BY 'pass';`
+## Step 2: Getting Your Development Environment Running
 
-5. Ensure `rails_user` and `pass` is specified in `config/database.yml`
+Open your workspace terminal. Make sure you're inside the **workspace** directory on the terminal.
+1. Clone the BART repo in your workspace. You can do it by copying **'git clone url'** from your BART's bitbucket repo and paste it in the terminal. (e.g `git clone https://shersanginov@bitbucket.org/RobHossBoss/bart.git`)
+
+2. `cd bart/`
+
+3. `sudo mysql` 
+   <br>If you get this error: can't connect socket '/var/run/mysqld/mysqld.sock, 
+then you first need to type `sudo service mysql restart` and then `sudo mysql`. (now you are logged in inside your database as a root user)
+
+    `> CREATE DATABASE BART_development;`
+
+    `> grant all privileges on BART_development.* TO 'rails_user'@'localhost' IDENTIFIED BY 'pass';`
+
+5. Ensure `rails_user` and `pass` is specified in `config/database.yml` (i.e. username: rails_user / password: pass)
 
 6. `bundle install`
 
 7. Run `rails db:migrate`
 
-8. `rails server`
+8. To run the application on Cloud9, click on **Run Project**. Once you click on it,
+the **Ruby on Rails** terminal shows up. On a top-right corner of the terminal, click
+on the **CWD** and then, select **bart** folder so 'bart' becomes the root directory when you run the application.
+Once you do this, click on **Run** again.
+
+You should get: **Your code is running at https://tes1-shers.c9users.io.** 
+Click on this link. It loads a little bit and then it opens **Bart** in a new tab.
+
+If you're not developing in Cloud9, you can run 'Bart' from the terminal with the below command:
+
+`rails server`
+
 
 ## Project Structure Overview
 ```
