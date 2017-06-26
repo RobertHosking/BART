@@ -37,7 +37,7 @@ Previously, the Labor Program has been generating these reports using a PHP scri
 
     `> CREATE DATABASE bart_development;`
 
-    `> grant all privileges on BART_development.* TO 'rails_user'@'localhost' IDENTIFIED BY 'pass';`
+    `> grant all privileges on bart_development.* TO 'rails_user'@'localhost' IDENTIFIED BY 'pass';`
 
 5. Ensure `rails_user` and `pass` is specified in `config/database.yml`
 
