@@ -29,7 +29,9 @@ class DatasetsController < ApplicationController
   # POST /datasets.json
   def create
       require 'roo'
+      require 'roo-xls'
       require 'fileutils'
+      
 
       @dataset = Dataset.new(dataset_params)
       @dataset.active = true
@@ -44,7 +46,7 @@ class DatasetsController < ApplicationController
       # Save the original and create the working copy
       # Create the directory if it does not exist
       Dataset.write_to(@dataset.original_file, uploaded_io.read)
-      yaml = Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset[:original_file]))
+      yaml = Dataset.sheet_to_yaml(Roo::Spreadsheet.open(@dataset[:original_file], extension: :xlsx))
       puts yaml
       Dataset.write_to(@dataset.yaml_file, yaml)
       #Create a Working Copy
