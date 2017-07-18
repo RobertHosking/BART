@@ -1,6 +1,6 @@
 ![BART logo](https://bytebucket.org/RobHossBoss/bart/raw/a2f4c1b1f940b2c8a9ebd17126b96be438289757/public/logo-full.png?token=9c50bbc3d27dc9793a7ee1adeedcb3da2180ac17) 
 
-# Berea College Anaylitics and Reporting Tool
+# Berea College Analytics and Reporting Tool
 
 BART is being built for the Labor Department at Berea college to perform analytics on results form the Student Labor Evaluations (SLE) and the Learning Experience Evaluations (LEE). Although, as we’ll see later on, BART is designed to be used for any data source.
 
