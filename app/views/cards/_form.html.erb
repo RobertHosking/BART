@@ -16,13 +16,13 @@
       <%= f.text_field :title, class: "form-control", id:"title-field", :required => true%><br>
 
       <%= f.label :chart_type, "Card Data Type"%>
-      <%= f.select :chart_type, options_for_select([["Pie Chart", "pie_chart"],["Bar Graph", "bar_chart"],["Grouped Bar Graph", "grouped_bar_chart"],["Donut Chart", "donut_chart"],["Text", "text"]]),{}, class: "form-control", id: "card-data-type-select" %>
+      <%= f.select :chart_type, options_for_select([[" "," "],["Pie Chart", "pie_chart"],["Bar Graph", "bar_chart"],["Grouped Bar Graph", "grouped_bar_chart"],["Donut Chart", "donut_chart"],["Text", "text"]], disabled:" "),{}, class: "form-control", id: "card-data-type-select" %>
       <br>
       <%= f.label :level, "Data Access Level" %>
-      <%= f.select :level, options_for_select([[],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]]),{}, class: "form-control" %>
+      <%= f.select :level, options_for_select([[" "," "],["School Wide", "school_wide"],["Division", "Division"],["Department", "department"],["Supervisor", "supervisor"]], disabled:" "),{}, class: "form-control" %>
       <br>
       <%= f.label :dataset_id, "Data Source"%>
-      <%= f.select :dataset_id, options_for_select([["none", "none"]]) + options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
+      <%= f.select :dataset_id, options_for_select([[" "," "],["none", "none"]], disabled:" ") + options_from_collection_for_select(@datasets, "id", "name", []),{}, class: "form-control", id: "dataset-select" %>
 
       <%= f.hidden_field :section_id, value: params['section_id'] %>
       <input type="number" id="section-id" name="card[section_id]" hidden>
@@ -30,6 +30,7 @@
       </div>
     <br>
     <div class="actions">
+
       <%= f.submit class: "btn", id:"card-submit", :disabled => true %>
 
     </div>
