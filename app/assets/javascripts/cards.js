@@ -46,6 +46,7 @@ function build_select(id, name, label, options) {
   var select_div = $("<div id='"+id+"-div'>");
   var label = $("<label for='"+name+"'>" +label+"</label>");
   var select = $("<select id='"+id+"' name='card["+name+"]' class='form-control'/>");
+  $("<option label=' ' selected disabled></option>").appendTo(select);
   jQuery.each(options, function(index, val){
       $("<option />", {value: val, text: val}).appendTo(select);
   });
