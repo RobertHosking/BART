@@ -1,4 +1,6 @@
 class Dataset < ApplicationRecord
+    #has_many :columns
+    #has_many :rowelements
     serialize :columns, Array # allows :columns to be stored as an array
     serialize :display_columns, Array
 
@@ -26,7 +28,8 @@ class Dataset < ApplicationRecord
             file.write(content)
         end
     end
-
+    
+   
     def self.yaml_to_sheet(yaml_file) #WORK IN PROGRESS
       # Returns a roo object from a yaml file
       # Params:
@@ -45,7 +48,60 @@ class Dataset < ApplicationRecord
 
       return oo
     end
+    
+    
+    def self.sheet_to_database(roo_object, dataset)
+       #this functions import all the datasets to database
+        require 'roo'
+        
 
+        roo_object.each_with_pagename do |name, sheet|
+        
+        num_columns = roo_object.last_column
+        for i in 1..num_columns
+          column_arr = []   #each element of a specific column will be stored here; 
+          column = roo_object.column(i)
+          
+          header = column[0]
+          for c in 1..roo_object.last_row()-1
+            column_arr << column[c]
+          end
+          
+          #check if column exist in database to prevent duplicates
+          if header.nil?
+            header=""
+          end
+          
+      
+          col_model = Column.new(column_name: header, dataset_id: dataset.id) #storing each column into the database table called Column
+          col_model.save
+     
+          row_num=0
+          for each_data in column_arr
+            row_num+=1
+            if each_data.nil? 
+                each_data=""
+            end
+            if Element.find_by(data: each_data) != nil #check if data already exists in the database
+              row_model = Rowelement.new(dataset_id: dataset.id, row_number: row_num, column_id: col_model.id, element_id:Element.find_by(data: each_data).id)
+              row_model.save
+    
+            else
+              #create new data 
+              element_new   = Element.new(data: each_data) #storing each dataelement into the database table called Element
+              element_new.save
+              
+              row_model = Rowelement.new(dataset_id: dataset.id, row_number: row_num, column_id: col_model.id, element_id: element_new.id)
+              row_model.save
+            end
+          end
+          
+        end
+      end
+    end
+      
+    
+      
     def self.sheet_to_yaml(roo_object)
       # Returns a yaml object from a roo_object
       # Params:
@@ -53,7 +109,7 @@ class Dataset < ApplicationRecord
         require 'roo'
         require 'yaml'
       yaml_hash = Hash[]
-
+      
       roo_object.each_with_pagename do |name, sheet|
         num_columns = roo_object.last_column
         for i in 1..num_columns
@@ -63,7 +119,7 @@ class Dataset < ApplicationRecord
           for c in 2..roo_object.last_row()
             column_arr << column[c]
           end
-          yaml_hash.store(header, column_arr)
+          yaml_hash.store(header, column_arr) 
         end
       end
       return yaml_hash.to_yaml
@@ -81,9 +137,10 @@ class Dataset < ApplicationRecord
     ######
     def hash
       require 'yaml'
-      hash = YAML.load(File.read(self.yaml_file))
+      hash = YAML.load(File.read(self.yaml_file))  #gets hash from yaml file
       return hash
     end
+    
 
     def hash_where(column_name, column_value)
       # Returns new hash where column_name == column_value

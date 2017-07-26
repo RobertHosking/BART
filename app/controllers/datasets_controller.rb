@@ -31,8 +31,7 @@ class DatasetsController < ApplicationController
       require 'roo'
       require 'roo-xls'
       require 'fileutils'
-      
-
+    
       @dataset = Dataset.new(dataset_params)
       @dataset.active = true
       uploaded_io = params[:dataset][:csv]
@@ -58,6 +57,9 @@ class DatasetsController < ApplicationController
 
     respond_to do |format|
       if @dataset.save
+        Dataset.sheet_to_database(Roo::Spreadsheet.open(@dataset[:original_file], extension: :xlsx), @dataset)  
+        #this function imports datasets to database
+        #HardWorker.perform_async(@dataset)   #a sidekiq function which is not functional yet
         format.html { redirect_to '/dashboard', notice: 'Dataset was successfully created.' }
         format.json { render :show, status: :created, location: @dataset }
       else

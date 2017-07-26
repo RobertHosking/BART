@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+
+gem 'sidekiq', '~> 4.1', '>= 4.1.2'   
+gem 'sinatra', require:false
+gem 'slim'
+
 gem 'roo-xls'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
@@ -41,6 +46,7 @@ gem 'd3_rails'
 gem 'c3-rails'
 
 group :development, :test do
+  gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
 end

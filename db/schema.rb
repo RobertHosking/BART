@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170303202848) do
+ActiveRecord::Schema.define(version: 20170721164728) do
 
-  create_table "cards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "cards", force: :cascade do |t|
     t.integer  "section_id"
     t.string   "title"
     t.string   "level"
@@ -22,12 +22,20 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.string   "where_column"
     t.string   "where_equals"
     t.string   "action"
-    t.text     "text",         limit: 65535
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.text     "text"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
-  create_table "datasets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "columns", force: :cascade do |t|
+    t.string   "column_name"
+    t.integer  "dataset_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["dataset_id"], name: "index_columns_on_dataset_id"
+  end
+
+  create_table "datasets", force: :cascade do |t|
     t.boolean  "active"
     t.string   "term"
     t.string   "year"
@@ -38,27 +46,45 @@ ActiveRecord::Schema.define(version: 20170303202848) do
     t.string   "original_file"
     t.string   "yaml_file"
     t.string   "working_file"
-    t.text     "columns",         limit: 65535
-    t.text     "display_columns", limit: 65535
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.text     "columns"
+    t.text     "display_columns"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
-  create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "elements", force: :cascade do |t|
+    t.string   "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reports", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "sections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name"
-    t.integer  "report_id"
-    t.text     "layout",     limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+  create_table "rowelements", force: :cascade do |t|
+    t.integer  "row_number"
+    t.integer  "column_id"
+    t.integer  "element_id"
+    t.integer  "dataset_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["column_id"], name: "index_rowelements_on_column_id"
+    t.index ["dataset_id"], name: "index_rowelements_on_dataset_id"
+    t.index ["element_id"], name: "index_rowelements_on_element_id"
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sections", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "report_id"
+    t.text     "layout"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.string   "password_digest"
