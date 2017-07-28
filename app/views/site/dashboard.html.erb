@@ -1,3 +1,4 @@
+
 <br>
 <br>
 <br>
@@ -54,8 +55,9 @@
 }
 </style>
 
+<script src ="https://unpkg.com/packery@2/dist/packery.pkgd.min.js">
+</script>
 <script>
-
 
 function saveLayout(data){
   var url = "/save_section_layout" // this is a different pattern to the url it can be confusing.
@@ -68,7 +70,7 @@ function saveLayout(data){
     });
 }
 
-
+console.log("savelayout")
 // external js: packery.pkgd.js, draggabilly.pkgd.js
 
 // add Packery.prototype methods
@@ -85,6 +87,7 @@ Packery.prototype.getShiftPositions = function( attrName ) {
     }
   });
 };
+console.log("1")
 
 Packery.prototype.initShiftLayout = function( positions, attr ) {
   if ( !positions || this.items.length > positions.length ) {
@@ -102,12 +105,13 @@ Packery.prototype.initShiftLayout = function( positions, attr ) {
       return;
     }
   }
+console.log("2")
   
   attr = attr || 'id'; // default to id attribute
   this._resetLayout();
   // set item order and horizontal position from saved positions
   this.items = positions.map( function( itemPosition ) {
-    console.log(this.items);
+    //console.log(this.items);
     var selector = '[' + attr + '="' + itemPosition.attr  + '"]'
     var itemElem = this.element.querySelector( selector );
     var item = this.getItem( itemElem );
@@ -116,7 +120,7 @@ Packery.prototype.initShiftLayout = function( positions, attr ) {
   }, this );
   this.shiftLayout();
 };
-
+console.log("3")
 // -----------------------------//
 
 // init Packery
@@ -125,7 +129,7 @@ var $grid = $('.grid').packery({
   columnWidth: 200,
   initLayout: false // disable initial layout
 });
-
+console.log($grid)
 // get saved dragged positions
 //var initPositions = localStorage.getItem('dragPositions');
 <% layout = Section.find(params[:section]).layout  %>
@@ -136,18 +140,20 @@ var initPositions;
 <%end%>
 // init layout with saved positions
 $grid.packery( 'initShiftLayout', initPositions, 'data-item-id' );
-
+console.log("Here")
 // make draggable
 $grid.find('.grid-item').each( function( i, itemElem ) {
   var draggie = new Draggabilly( itemElem );
   $grid.packery( 'bindDraggabillyEvents', draggie );
 });
+console.log("Now here")
 
 // save drag positions on event
 $grid.on( 'dragItemPositioned', function() {
   // save drag positions
   var positions = $grid.packery( 'getShiftPositions', 'data-item-id' );
   var positionsJSON = JSON.stringify( positions );
+  console.log(positions);
   saveLayout(
   {
     section_id: <%= params[:section] %>,
@@ -158,6 +164,7 @@ $grid.on( 'dragItemPositioned', function() {
   );
   
 });
+console.log("Finally Now here")
 
 
 </script>
