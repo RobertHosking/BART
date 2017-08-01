@@ -1,15 +1,2 @@
-<div class="btn-wrapper" data-toggle="tooltip" title="New Card" data-placement="right" >
-  <% if params[:section] %>
-    <% section = params[:section] %>
-  <% else %>
-    <% section = "0" %>
-  <% end %>
-  <button style="z-index:1000" class="circle" onclick="location.href='<%= new_card_path + "?section=" + section.to_s%>';">
-     <img src="plus.png" alt="" />
-  </button>
-</div>
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
+
+\'

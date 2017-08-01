@@ -25,7 +25,7 @@
 
 <% else %>
 
-<div class="grid">
+<div class="grid" >
   <% @cards.each_with_index do |card, index| %>
     <% if card.section_id.to_s == params[:section].to_s %>
     <div class="grid-item" data-item-id="<%= index %>">
@@ -45,6 +45,23 @@
 </div>
 
 <% end %>
+
+<!---Testing stuff here but it works huh--->
+<div  class="btn-wrapper" data-toggle="tooltip" title="New Card" data-placement="right" >
+  <% if params[:section] %>
+    <% section = params[:section] %>
+  <% else %>
+    <% section = "0" %>
+  <% end %>
+  <button style="z-index:1000" position="Absolute" class="circle" onclick="location.href='<%= new_card_path + "?section=" + section.to_s%>';">
+     <img src="plus.png" alt="" />
+  </button>
+</div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 
 <style>
 .packery-drop-placeholder {
