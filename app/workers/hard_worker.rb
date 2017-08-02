@@ -1,3 +1,4 @@
+#to run sidekiq, In your terminal: redis-server | Open another terminal: bundle exec sidekiq
 require 'sidekiq/web'
 
 class HardWorker
@@ -7,27 +8,17 @@ class HardWorker
   
   
 
-   def perform()
+   def perform(id)
      #TODO sidekiq 
-     require 'roo'
-     require 'roo-xls'
-     Dataset.sheet_to_database(Roo::Spreadsheet.open(@dataset[:original_file], extension: :xlsx))
      
-     '''
-      Dataset.sheet_to_database()
-      serialize :columns, Array # allows :columns to be stored as an array
-      # Returns a yaml object from a roo_object
-      # Params:
-      # +roo_object+ object created by Roo::Spreadsheet
-  
-      
-      roo_object=Roo::Spreadsheet.open(dataset[:original_file], extension: :xlsx)
-      
-          
-      col_model = Column.new(column_name: "sher", dataset_id: dataset.id) #storing each column into the database table called Column
-      col_model.save
+       #this functions import all the datasets to database
+        require 'roo'
+        require 'roo-xls'
         
-      
+        dataset=Dataset.find(id)
+        roo_object=Roo::Spreadsheet.open(dataset[:original_file], extension: :xlsx)
+       
+
         roo_object.each_with_pagename do |name, sheet|
         
         num_columns = roo_object.last_column
@@ -45,6 +36,7 @@ class HardWorker
             header=""
           end
           
+      
           col_model = Column.new(column_name: header, dataset_id: dataset.id) #storing each column into the database table called Column
           col_model.save
      
@@ -55,7 +47,7 @@ class HardWorker
                 each_data=""
             end
             if Element.find_by(data: each_data) != nil #check if data already exists in the database
-              row_model = Rowelement.new(dataset_id: dataset, row_number: row_num, column_id: col_model.id, element_id:Element.find_by(data: each_data).id)
+              row_model = Rowelement.new(dataset_id: dataset.id, row_number: row_num, column_id: col_model.id, element_id:Element.find_by(data: each_data).id)
               row_model.save
     
             else
@@ -70,7 +62,7 @@ class HardWorker
           
         end
       end
-  '''    
+      
    end
   
 end

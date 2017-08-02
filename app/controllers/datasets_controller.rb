@@ -54,12 +54,14 @@ class DatasetsController < ApplicationController
       # Create the YAML
       @dataset.columns = @dataset.get_columns
       @dataset.display_columns = @dataset.columns
+      
 
     respond_to do |format|
       if @dataset.save
-        Dataset.sheet_to_database(Roo::Spreadsheet.open(@dataset[:original_file], extension: :xlsx), @dataset)  
         #this function imports datasets to database
-        #HardWorker.perform_async(@dataset)   #a sidekiq function which is not functional yet
+        Dataset.sheet_to_database(Roo::Spreadsheet.open(@dataset[:original_file], extension: :xlsx), @dataset)  
+        #uncomment the below line if you want sidekiq to import datasets into database/ comment out the above line
+        #HardWorker.perform_async(@dataset.id)  
         format.html { redirect_to '/dashboard', notice: 'Dataset was successfully created.' }
         format.json { render :show, status: :created, location: @dataset }
       else
