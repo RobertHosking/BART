@@ -84,11 +84,9 @@ def do_action
 end
 
 def get_dataset_columns
-  '''columns in the form are being retrieved from the database'''
-  #@dataset = Dataset.find(params[:dataset_id])
-  @column=Column.where(dataset_id: params[:dataset_id])  #retieving specific dataset columns from the database Columns table
+  @dataset = Dataset.find(params[:dataset_id])
   respond_to do |format|
-    format.json { render json: @column.pluck(:column_name) }  #return column names in json format
+    format.json { render json: @dataset.columns }
   end
 end
 
@@ -96,14 +94,8 @@ def get_column_actions
   require 'yaml'
   hash = YAML.load(File.read("public/config/actions.yml"))
   dataset = Dataset.find(params[:dataset_id])
-  
-  #params[:column_name]  --> whatever you choose on use field form
-  selected_column = Column.where(column_name: params[:column_name], dataset_id: params[:dataset_id]).first #find selected column_id
-  row=Rowelement.where(column_id: selected_column.id, dataset_id: params[:dataset_id]).first #find element id from row
-  data=Element.find(row.element_id).data #find the element data 
-  type= dataset.type_of(data) #get the type of data 
-  #data = dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
-  #type = dataset.type_of(data)
+  data = dataset.select(params[:column_name], params[:column_where], params[:column_where_equals])
+  type = dataset.type_of(data)
    respond_to do |format|
      format.json {render json: hash[type]}
    end

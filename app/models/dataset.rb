@@ -116,7 +116,7 @@ class Dataset < ApplicationRecord
           column_arr = []
           column = roo_object.column(i)
           header = column[0]
-          for c in 1..roo_object.last_row()-1
+          for c in 2..roo_object.last_row()
             column_arr << column[c]
           end
           yaml_hash.store(header, column_arr) 
@@ -196,8 +196,8 @@ class Dataset < ApplicationRecord
       # return group_hash
       return data.reduce(Hash.new(0)) { |a, b| a[b] += 1; a }
     end
-    '''
-      def type_of(data)
+
+    def type_of(data)
       # Determines the data type of column_name
       #
       # Float, Integer => "Number"
@@ -234,40 +234,6 @@ class Dataset < ApplicationRecord
       else
         return "String"
       end
-    end'''
-    
-    def type_of(data)
-      # Determines the data type of column_name
-      #
-      # Float, Integer => "Number"
-      # Time           => "Time"
-      # Else           => "String"
-      def is_numeric?(obj)
-        obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
-      end
-      def is_time?(obj)
-        return DateTime.parse(obj) rescue nil
-      end
-      col_is_num = true
-      col_is_time = true
-      
-      if is_numeric? data
-      else
-        col_is_num = false
-      end
-      
-      if col_is_num
-        return "Number"
-      end
-      
-      if is_time? data
-        return "Time"
-      else
-        col_is_time = false
-        return "String"
-      end
-    
-    
     end
 
 
